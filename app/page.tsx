@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   Award,
+  CheckCircle2,
   Cloud,
   Download,
   GitBranch,
@@ -41,8 +42,7 @@ const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const resumeHref = `/${profile.resumeFileName}`;
-  const githubStats = `https://github-readme-stats.vercel.app/api?username=${profile.githubUser}&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0F172A`;
-  const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${profile.githubUser}&layout=compact&theme=tokyonight&hide_border=true&bg_color=0F172A`;
+  const githubFocus = ["Infrastructure Automation", "Terraform", "PowerShell", "CI/CD Tooling", "Platform Engineering"];
 
   const nav = [
     { label: "About", href: "#about" },
@@ -75,12 +75,12 @@ export default function Home() {
             <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={17} /></a>
             <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="GitHub"><Github size={17} /></a>
           </div>
-          <button className="text-dim md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+          <button className="text-dim md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen} aria-controls="mobile-nav">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
         {menuOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-line bg-dark md:hidden">
+          <motion.div id="mobile-nav" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-line bg-dark md:hidden">
             <div className="flex flex-col gap-4 px-6 py-5 text-sm font-medium text-dim">
               {nav.map((n) => (
                 <a key={n.href} href={n.href} onClick={() => setMenuOpen(false)} className="hover:text-foreground">{n.label}</a>
@@ -152,12 +152,27 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ── Featured Achievements ──────────────────────────────── */}
+      <section className="px-6 py-32">
+        <div className="mx-auto max-w-6xl">
+          <SectionTitle eyebrow="Recent Impact" title="What I've delivered" />
+          <motion.div {...fade} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {profile.achievements.map((a, i) => (
+              <motion.div key={i} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-panel/50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                <span className="text-[0.85rem] leading-relaxed text-dim">{a}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── About ────────────────────────────────────────────── */}
-      <section id="about" className="px-6 py-24">
+      <section id="about" className="border-t border-line px-6 py-32">
         <div className="mx-auto max-w-6xl">
           <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
             <div>
-              <SectionTitle eyebrow="About" title="The engineer behind the systems" />
+              <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
               <div className="flex flex-wrap gap-2">
                 {profile.certifications.map((cert) => (
                   <span key={cert.code} className="gradient-border inline-flex rounded-full bg-panel px-3 py-1.5 text-xs font-semibold text-accent">
@@ -175,14 +190,14 @@ export default function Home() {
       </section>
 
       {/* ── Expertise ────────────────────────────────────────── */}
-      <section id="expertise" className="border-t border-line px-6 py-28">
+      <section id="expertise" className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Capabilities" title="What I design, automate, and improve" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {profile.expertise.map((exp, i) => {
               const Icon = expertiseIcons[i] || Cloud;
               return (
-                <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-panel/50 p-6 transition-all hover:border-accent/20 hover:shadow-glow">
+                <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                   <Icon className="mb-3 h-5 w-5 text-accent" />
                   <h3 className="text-[0.95rem] font-bold">{exp.title}</h3>
                   <p className="mt-2 text-[0.82rem] leading-relaxed text-dim">{exp.body}</p>
@@ -197,12 +212,12 @@ export default function Home() {
       </section>
 
       {/* ── Projects ─────────────────────────────────────────── */}
-      <section id="projects" className="border-t border-line px-6 py-28">
+      <section id="projects" className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Selected work" title="Projects that compound velocity" />
           <div className="grid gap-5 md:grid-cols-2">
             {profile.projects.map((proj, i) => (
-              <motion.article key={proj.title} {...item(i)} className="group flex flex-col rounded-xl border border-line bg-panel/50 p-6 transition-all hover:border-accent/20 hover:shadow-glow">
+              <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                 <h3 className="font-bold">{proj.title}</h3>
                 <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
                 <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
@@ -219,9 +234,9 @@ export default function Home() {
       </section>
 
       {/* ── Experience ───────────────────────────────────────── */}
-      <section id="experience" className="border-t border-line px-6 py-28">
+      <section id="experience" className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Experience" title="Where I&apos;ve built leverage" />
+          <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
           {profile.experience.map((job) => (
             <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-panel/50 p-7 sm:p-8">
               <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
@@ -245,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* ── Stack ────────────────────────────────────────────── */}
-      <section className="border-t border-line px-6 py-28">
+      <section className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Stack" title="Tools and technologies" />
           <motion.div {...fade} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -261,32 +276,55 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GitHub ────────────────────────────────────────────── */}
-      <section className="border-t border-line px-6 py-28">
+      {/* ── Certifications ─────────────────────────────────── */}
+      <section id="certifications" className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Open source" title={`GitHub — ${profile.githubUser}`} />
-          <div className="grid gap-4 lg:grid-cols-2">
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl border border-line bg-panel/50 p-4 transition-all hover:border-accent/20 hover:shadow-glow">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={githubStats} alt="GitHub stats" className="w-full rounded-lg" />
-            </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl border border-line bg-panel/50 p-4 transition-all hover:border-accent/20 hover:shadow-glow">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={topLangs} alt="Top languages" className="w-full rounded-lg" />
-            </a>
+          <SectionTitle eyebrow="Credentials" title="Certifications" />
+          <div className="grid gap-5 sm:grid-cols-2">
+            {profile.certifications.map((cert, i) => (
+              <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                <div className="mb-3 flex items-center gap-3">
+                  <Award className="h-6 w-6 shrink-0 text-accent" />
+                  <span className="rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-0.5 text-xs font-bold text-accent">{cert.code}</span>
+                </div>
+                <h3 className="font-bold">{cert.title}</h3>
+                <p className="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{cert.description}</p>
+                <p className="mt-2 text-xs font-medium text-dim/50">{cert.issuer}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* ── GitHub Activity ─────────────────────────────────── */}
+      <section className="border-t border-line px-6 py-36">
+        <div className="mx-auto max-w-6xl">
+          <SectionTitle eyebrow="Open source" title="GitHub Activity" />
+          <motion.div {...fade} className="rounded-xl border border-line bg-panel/50 p-8 transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+            <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+              <div className="flex-1">
+                <p className="text-2xl font-extrabold sm:text-3xl">50+ <span className="text-dim font-medium text-base">Repositories</span></p>
+                <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                  {githubFocus.map((t) => <Badge key={t}>{t}</Badge>)}
+                </div>
+              </div>
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
+                View GitHub <ArrowUpRight size={15} />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── Contact ──────────────────────────────────────────── */}
-      <section id="contact" className="border-t border-line px-6 py-28">
+      <section id="contact" className="border-t border-line px-6 py-36">
         <motion.div {...fade} className="mx-auto max-w-6xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Let&apos;s build something <span className="gradient-text">reliable.</span>
+            Ready to modernize your <span className="gradient-text">CI/CD platform?</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-dim">
-            Available for DevOps, platform engineering, CI/CD modernization, and infrastructure automation conversations.
+          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
+            Whether it's cloud automation, developer experience, or platform engineering &mdash; let's talk.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
