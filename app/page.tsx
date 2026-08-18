@@ -17,28 +17,26 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { profile } from "@/lib/profile";
 
 const fade = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
-
-const stagger = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
-  transition: { duration: 0.45, delay, ease: "easeOut" },
-});
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.5 },
+};
 
-const accentColors = ["#286F6C", "#6D4B8A", "#C83C63", "#8897B8", "#B8A295", "#0D2F3F"];
+const item = (i: number) => ({
+  initial: { opacity: 0, y: 16 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-40px" },
+  transition: { duration: 0.4, delay: i * 0.07 },
+});
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const resumeHref = `/${profile.resumeFileName}`;
-  const githubStats = `https://github-readme-stats.vercel.app/api?username=${profile.githubUser}&show_icons=true&theme=default&hide_border=true&bg_color=F8F7F1&title_color=0D2F3F&text_color=0D2F3F&icon_color=286F6C`;
-  const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${profile.githubUser}&layout=compact&theme=default&hide_border=true&bg_color=F8F7F1&title_color=0D2F3F&text_color=0D2F3F`;
+  const githubStats = `https://github-readme-stats.vercel.app/api?username=${profile.githubUser}&show_icons=true&theme=tokyonight&hide_border=true&bg_color=131C31`;
+  const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${profile.githubUser}&layout=compact&theme=tokyonight&hide_border=true&bg_color=131C31`;
 
-  const sections = [
+  const nav = [
     { label: "About", href: "#about" },
     { label: "Expertise", href: "#expertise" },
     { label: "Projects", href: "#projects" },
@@ -47,131 +45,117 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-cream text-primary">
+    <div className="min-h-screen bg-dark text-foreground">
 
-      {/* ─── Header ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-primary/8 bg-cream/80 backdrop-blur-md">
+      {/* ── Ambient glow ─────────────────────────────────────── */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full bg-accent/[0.07] blur-[160px]" />
+        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-purple/[0.07] blur-[160px]" />
+      </div>
+
+      {/* ── Header ───────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 border-b border-line bg-dark/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <a href="#" className="text-xl font-bold tracking-tight">{profile.initials}</a>
-          <nav className="hidden gap-7 text-[0.82rem] font-semibold uppercase tracking-[0.06em] text-primary/70 md:flex">
-            {sections.map((s) => (
-              <a key={s.href} href={s.href} className="transition-colors hover:text-primary">{s.label}</a>
+          <a href="#" className="gradient-text text-lg font-extrabold">{profile.initials}</a>
+          <nav className="hidden gap-6 text-[0.8rem] font-medium text-dim md:flex">
+            {nav.map((n) => (
+              <a key={n.href} href={n.href} className="transition-colors hover:text-foreground">{n.label}</a>
             ))}
           </nav>
-          <div className="hidden items-center gap-4 md:flex">
-            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-primary/50 transition-colors hover:text-primary" aria-label="LinkedIn"><Linkedin size={18} /></a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-primary/50 transition-colors hover:text-primary" aria-label="GitHub"><Github size={18} /></a>
+          <div className="hidden items-center gap-3 md:flex">
+            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={17} /></a>
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="GitHub"><Github size={17} /></a>
           </div>
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button className="text-dim md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
         {menuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            className="overflow-hidden border-t border-primary/8 bg-cream md:hidden"
-          >
-            <div className="flex flex-col gap-4 px-6 py-5 text-sm font-semibold uppercase tracking-wide">
-              {sections.map((s) => (
-                <a key={s.href} href={s.href} onClick={() => setMenuOpen(false)}>{s.label}</a>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-line bg-dark md:hidden">
+            <div className="flex flex-col gap-4 px-6 py-5 text-sm font-medium text-dim">
+              {nav.map((n) => (
+                <a key={n.href} href={n.href} onClick={() => setMenuOpen(false)} className="hover:text-foreground">{n.label}</a>
               ))}
-              <div className="flex gap-4 pt-2">
-                <a href={profile.linkedInUrl} target="_blank" rel="noreferrer"><Linkedin size={18} /></a>
-                <a href={profile.githubUrl} target="_blank" rel="noreferrer"><Github size={18} /></a>
+              <div className="flex gap-4 pt-2 text-dim">
+                <a href={profile.linkedInUrl} target="_blank" rel="noreferrer"><Linkedin size={17} /></a>
+                <a href={profile.githubUrl} target="_blank" rel="noreferrer"><Github size={17} /></a>
               </div>
             </div>
           </motion.div>
         )}
       </header>
 
-      {/* ─── Hero ───────────────────────────────────────────── */}
-      <section className="px-6 pb-20 pt-20 sm:pt-28">
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="px-6 pb-28 pt-28 sm:pt-36 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <p className="mb-5 text-sm font-bold uppercase tracking-[0.15em] text-secondary">{profile.title}</p>
-            <h1 className="max-w-3xl text-[clamp(2.5rem,5.5vw,4.2rem)] font-extrabold leading-[1.08] tracking-tight">
-              {profile.headline}
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.15em] text-accent">{profile.title}</p>
+            <h1 className="mx-auto max-w-3xl text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
+              {profile.headline.split("platforms").map((part, i) =>
+                i === 0 ? <span key={i}>{part}<span className="gradient-text">platforms</span></span> : <span key={i}>{part}</span>
+              )}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-primary/70">{profile.summary.split(",").slice(1).join(",").trim()}</p>
+            <p className="mx-auto mt-5 max-w-lg text-[1.05rem] leading-relaxed text-dim">{profile.summary.split(",").slice(1).join(",").trim()}</p>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 flex flex-wrap gap-3"
-          >
-            <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-cream transition-all hover:bg-secondary">
-              Get in touch <ArrowUpRight size={16} />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }} className="mt-8 flex flex-wrap justify-center gap-3">
+            <a href="#contact" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
+              Get in touch <ArrowUpRight size={15} />
             </a>
-            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 px-5 py-3 text-sm font-bold transition-all hover:border-primary/50">
-              Resume <Download size={16} />
+            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+              Resume <Download size={15} />
             </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 px-5 py-3 text-sm font-bold transition-all hover:border-primary/50">
-              GitHub <Github size={16} />
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+              GitHub <Github size={15} />
             </a>
-          </motion.div>
-
-          {/* Metrics strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-primary/10 bg-primary/10 sm:grid-cols-4"
-          >
-            {profile.metrics.map((m, i) => (
-              <div key={m.label} className="bg-cream px-5 py-6 sm:px-6">
-                <span className="block text-3xl font-extrabold" style={{ color: accentColors[i] }}>{m.value}</span>
-                <span className="mt-1 block text-xs font-bold uppercase tracking-wide text-primary/60">{m.label}</span>
-              </div>
-            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── About ──────────────────────────────────────────── */}
-      <section id="about" className="border-t border-primary/8 px-6 py-20">
+      {/* ── Metrics ──────────────────────────────────────────── */}
+      <section className="border-y border-line px-6 py-16">
+        <motion.div {...fade} className="mx-auto grid max-w-6xl grid-cols-2 gap-8 sm:grid-cols-4">
+          {profile.metrics.map((m) => (
+            <div key={m.label}>
+              <span className="gradient-text block text-4xl sm:text-5xl font-extrabold">{m.value}</span>
+              <span className="mt-1.5 block text-[0.78rem] font-medium leading-snug text-dim">{m.label}</span>
+            </div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* ── About ────────────────────────────────────────────── */}
+      <section id="about" className="px-6 py-24">
         <div className="mx-auto max-w-6xl">
-          <motion.div {...fade} className="grid items-start gap-12 md:grid-cols-[1fr_1.4fr]">
+          <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
             <div>
-              <SectionTitle eyebrow="About" title="The story behind the systems" />
-              <div className="mt-4 flex flex-wrap gap-2">
-                {profile.certifications.map((cert, i) => (
-                  <span key={cert.code} className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold text-cream" style={{ background: accentColors[i] }}>
-                    {cert.code} — {cert.title.split(": ")[1]}
+              <SectionTitle eyebrow="About" title="The engineer behind the systems" />
+              <div className="flex flex-wrap gap-2">
+                {profile.certifications.map((cert) => (
+                  <span key={cert.code} className="gradient-border inline-flex rounded-full bg-panel px-3 py-1.5 text-xs font-semibold text-accent">
+                    {cert.code}
                   </span>
                 ))}
               </div>
             </div>
-            <div className="space-y-4 text-[0.95rem] leading-[1.85] text-primary/80">
-              {profile.about.map((p) => (
-                <p key={p.slice(0, 30)}>{p}</p>
-              ))}
-              <p className="border-l-4 border-secondary/40 pl-4 italic text-primary/60">
-                &ldquo;{profile.tagline}&rdquo;
-              </p>
+            <div className="space-y-4 text-[0.92rem] leading-[1.8] text-dim">
+              {profile.about.map((p) => <p key={p.slice(0, 30)}>{p}</p>)}
+              <p className="border-l-2 border-accent/30 pl-4 italic text-foreground/60">&ldquo;{profile.tagline}&rdquo;</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Expertise ──────────────────────────────────────── */}
-      <section id="expertise" className="bg-white px-6 py-20">
+      {/* ── Expertise ────────────────────────────────────────── */}
+      <section id="expertise" className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Capabilities" title="What I design, automate, and improve" />
-          <div className="mt-2 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {profile.expertise.map((item, i) => (
-              <motion.div
-                key={item.title}
-                {...stagger(i * 0.08)}
-                className="group rounded-2xl border border-primary/8 bg-cream/50 p-6 transition-all hover:-translate-y-1 hover:shadow-[0_20px_50px_-12px_rgba(13,47,63,0.12)]"
-              >
-                <div className="mb-4 h-1 w-10 rounded-full" style={{ background: accentColors[i] }} />
-                <h3 className="text-lg font-bold">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-primary/65">{item.body}</p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {item.tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {profile.expertise.map((exp, i) => (
+              <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-panel/50 p-6 transition-all hover:border-accent/20 hover:shadow-glow">
+                <h3 className="text-[0.95rem] font-bold">{exp.title}</h3>
+                <p className="mt-2 text-[0.82rem] leading-relaxed text-dim">{exp.body}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {exp.tags.map((t) => <Badge key={t}>{t}</Badge>)}
                 </div>
               </motion.div>
             ))}
@@ -179,26 +163,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Projects ───────────────────────────────────────── */}
-      <section id="projects" className="border-t border-primary/8 px-6 py-20">
+      {/* ── Projects ─────────────────────────────────────────── */}
+      <section id="projects" className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Selected work" title="Projects that compound engineering velocity" />
-          <div className="mt-2 grid gap-6 md:grid-cols-2">
-            {profile.projects.map((project, i) => (
-              <motion.article
-                key={project.title}
-                {...stagger(i * 0.1)}
-                className="group flex flex-col rounded-2xl border border-primary/8 bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-[0_20px_50px_-12px_rgba(13,47,63,0.12)]"
-              >
-                <div className="mb-3 h-1 w-10 rounded-full" style={{ background: accentColors[i] }} />
-                <h3 className="text-xl font-bold">{project.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-[1.75] text-primary/70">{project.summary}</p>
-                <div className="mt-4 rounded-xl bg-secondary/8 px-4 py-3 text-sm">
-                  <span className="font-bold text-secondary">Impact </span>
-                  <span className="text-primary/75">{project.impact}</span>
+          <SectionTitle eyebrow="Selected work" title="Projects that compound velocity" />
+          <div className="grid gap-5 md:grid-cols-2">
+            {profile.projects.map((proj, i) => (
+              <motion.article key={proj.title} {...item(i)} className="group flex flex-col rounded-xl border border-line bg-panel/50 p-6 transition-all hover:border-accent/20 hover:shadow-glow">
+                <h3 className="font-bold">{proj.title}</h3>
+                <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
+                <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
+                  <span className="font-semibold text-accent">Impact </span>
+                  <span className="text-foreground/70">{proj.impact}</span>
                 </div>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {project.tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {proj.tags.map((t) => <Badge key={t}>{t}</Badge>)}
                 </div>
               </motion.article>
             ))}
@@ -206,44 +185,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Experience ─────────────────────────────────────── */}
-      <section id="experience" className="bg-white px-6 py-20">
+      {/* ── Experience ───────────────────────────────────────── */}
+      <section id="experience" className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Experience" title="Where I&apos;ve built leverage" />
-          <div className="mt-2 space-y-8">
-            {profile.experience.map((job) => (
-              <motion.div key={job.company} {...fade} className="rounded-2xl border border-primary/8 bg-cream/50 p-7 sm:p-8">
-                <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-                  <div>
-                    <h3 className="text-xl font-bold">{job.role}</h3>
-                    <p className="mt-0.5 text-base font-semibold text-secondary">{job.company}</p>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold text-primary/50">{job.period} · {job.location}</span>
+          {profile.experience.map((job) => (
+            <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-panel/50 p-7 sm:p-8">
+              <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                <div>
+                  <h3 className="font-bold">{job.role}</h3>
+                  <p className="text-sm font-medium text-accent">{job.company}</p>
                 </div>
-                <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {job.bullets.map((bullet, i) => (
-                    <li key={bullet} className="flex items-start gap-3 text-sm leading-relaxed text-primary/75">
-                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: accentColors[i % accentColors.length] }} />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+                <span className="text-[0.78rem] font-medium text-dim">{job.period} · {job.location}</span>
+              </div>
+              <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                {job.bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-2.5 text-[0.82rem] leading-relaxed text-dim">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* ─── Stack ──────────────────────────────────────────── */}
-      <section className="border-t border-primary/8 px-6 py-20">
+      {/* ── Stack ────────────────────────────────────────────── */}
+      <section className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Technical stack" title="Tools and technologies" />
-          <motion.div {...fade} className="mt-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Object.entries(profile.stack).map(([category, tools]) => (
-              <div key={category}>
-                <p className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-primary/45">{category}</p>
-                <div className="flex flex-wrap gap-2">
-                  {tools.map((tool) => <Badge key={tool}>{tool}</Badge>)}
+          <SectionTitle eyebrow="Stack" title="Tools and technologies" />
+          <motion.div {...fade} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(profile.stack).map(([cat, tools]) => (
+              <div key={cat}>
+                <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-dim/60">{cat}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {tools.map((t) => <Badge key={t}>{t}</Badge>)}
                 </div>
               </div>
             ))}
@@ -251,83 +228,79 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── GitHub ─────────────────────────────────────────── */}
-      <section id="github" className="bg-white px-6 py-20">
+      {/* ── GitHub ────────────────────────────────────────────── */}
+      <section className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Open source" title={`GitHub — ${profile.githubUser}`} />
-          <div className="mt-2 grid gap-5 lg:grid-cols-2">
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border border-primary/8 bg-cream/50 p-5 transition-all hover:-translate-y-1 hover:shadow-lg">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl border border-line bg-panel/50 p-4 transition-all hover:border-accent/20 hover:shadow-glow">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={githubStats} alt="GitHub stats" className="w-full" />
+              <img src={githubStats} alt="GitHub stats" className="w-full rounded-lg" />
             </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border border-primary/8 bg-cream/50 p-5 transition-all hover:-translate-y-1 hover:shadow-lg">
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl border border-line bg-panel/50 p-4 transition-all hover:border-accent/20 hover:shadow-glow">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={topLangs} alt="Top languages" className="w-full" />
+              <img src={topLangs} alt="Top languages" className="w-full rounded-lg" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* ─── Writing ────────────────────────────────────────── */}
-      <section className="border-t border-primary/8 px-6 py-20">
+      {/* ── Writing ──────────────────────────────────────────── */}
+      <section className="border-t border-line px-6 py-28">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Technical writing" title="Ideas worth sharing" />
-          <div className="mt-2 space-y-3">
+          <SectionTitle eyebrow="Writing" title="Ideas worth sharing" />
+          <div className="space-y-2.5">
             {profile.posts.map((post, i) => (
-              <motion.div
-                key={post.title}
-                {...stagger(i * 0.06)}
-                className="group flex items-center justify-between rounded-xl border border-primary/8 bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
-              >
+              <motion.a key={post.title} href="#" {...item(i)} className="group flex items-center justify-between rounded-xl border border-line bg-panel/50 px-5 py-4 transition-all hover:border-accent/20 hover:shadow-glow">
                 <div className="flex items-start gap-3">
-                  <BookOpen className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
+                  <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-accent/60" />
                   <div>
-                    <span className="font-bold">{post.title}</span>
-                    <p className="mt-0.5 text-xs text-primary/50">{post.desc}</p>
+                    <span className="text-[0.88rem] font-semibold">{post.title}</span>
+                    <p className="mt-0.5 text-xs text-dim/60">{post.desc}</p>
                   </div>
                 </div>
-                <ArrowUpRight className="h-5 w-5 shrink-0 text-primary/25 transition-colors group-hover:text-secondary" />
-              </motion.div>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-dim/30 transition-colors group-hover:text-accent" />
+              </motion.a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Contact ────────────────────────────────────────── */}
-      <section id="contact" className="bg-primary px-6 py-24 text-cream">
+      {/* ── Contact ──────────────────────────────────────────── */}
+      <section id="contact" className="border-t border-line px-6 py-28">
         <motion.div {...fade} className="mx-auto max-w-6xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.15em] text-cream/60">Get in touch</p>
-          <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
-            Let&apos;s build something reliable, <br className="hidden sm:block" />repeatable, and useful.
+          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Let&apos;s build something <span className="gradient-text">reliable.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-cream/70">
-            Available for conversations around DevOps, platform engineering, CI/CD modernization, and infrastructure automation.
+          <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-dim">
+            Available for DevOps, platform engineering, CI/CD modernization, and infrastructure automation conversations.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-full bg-cream px-6 py-3 text-sm font-bold text-primary transition-all hover:bg-white">
-              <Mail size={16} /> Email me
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
+              <Mail size={15} /> Email me
             </a>
-            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-cream/30 px-5 py-3 text-sm font-bold transition-all hover:border-cream/60">
-              <Linkedin size={16} /> LinkedIn
+            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+              <Linkedin size={15} /> LinkedIn
             </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-cream/30 px-5 py-3 text-sm font-bold transition-all hover:border-cream/60">
-              <Github size={16} /> GitHub
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+              <Github size={15} /> GitHub
             </a>
-            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-full border-2 border-cream/30 px-5 py-3 text-sm font-bold transition-all hover:border-cream/60">
-              <Download size={16} /> Resume
+            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+              <Download size={15} /> Resume
             </a>
           </div>
         </motion.div>
       </section>
 
-      {/* ─── Footer ─────────────────────────────────────────── */}
-      <footer className="border-t border-primary/8 bg-cream px-6 py-6">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-primary/45 sm:flex-row">
-          <span>&copy; {new Date().getFullYear()} {profile.name}</span>
-          <div className="flex gap-5">
-            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-primary" aria-label="LinkedIn"><Linkedin size={16} /></a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-primary" aria-label="GitHub"><Github size={16} /></a>
-            <a href={`mailto:${profile.email}`} className="transition-colors hover:text-primary" aria-label="Email"><Mail size={16} /></a>
+      {/* ── Footer ───────────────────────────────────────────── */}
+      <footer className="border-t border-line px-6 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim/50 sm:flex-row">
+          <span>&copy; {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
+          <div className="flex gap-4">
+            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={14} /></a>
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" aria-label="GitHub"><Github size={14} /></a>
+            <a href={`mailto:${profile.email}`} className="transition-colors hover:text-foreground" aria-label="Email"><Mail size={14} /></a>
           </div>
         </div>
       </footer>
