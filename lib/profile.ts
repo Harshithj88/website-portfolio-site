@@ -17,6 +17,13 @@ export const profile = {
     "At loanDepot, I manage Azure DevOps and GitHub Actions platforms that support 100+ repositories across multiple engineering teams. I design automation that doesn't just work — it creates leverage, enabling teams to ship faster while maintaining the governance and security that enterprise environments demand.",
     "I believe the best platform engineers are invisible: when the systems you build are working well, nobody notices. That's the goal — reliability so consistent it becomes the backdrop, not the headline.",
   ],
+  achievements: [
+    "Supported 100+ repositories across enterprise engineering teams",
+    "Built enterprise GitHub Actions runner platform from the ground up",
+    "Led source control modernization initiatives across the organization",
+    "Implemented Terraform and Bicep infrastructure standards",
+    "Improved deployment governance and release automation",
+  ],
   tagline:
     "I don't just automate tasks — I design systems that create leverage for engineering teams.",
   metrics: [
