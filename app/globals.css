@@ -4,14 +4,15 @@
   --color-dark: #050816;
   --color-dark-alt: #020617;
   --color-panel: #0F172A;
-  --color-line: rgba(148, 163, 184, 0.18);
+  --color-card: #0B1120;
+  --color-line: rgba(148, 163, 184, 0.28);
   --color-foreground: #F8FAFC;
   --color-dim: #94A3B8;
   --color-accent: #38BDF8;
   --color-accent-alt: #22D3EE;
   --color-purple: #8B5CF6;
   --shadow-glow: 0 0 40px rgba(56, 189, 248, 0.1);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 html {
@@ -24,7 +25,7 @@ body {
   min-height: 100vh;
   background: var(--color-dark);
   color: var(--color-foreground);
-  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-family: inherit;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

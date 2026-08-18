@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
+  BookOpen,
   ArrowUpRight,
   Award,
   CheckCircle2,
@@ -12,6 +13,7 @@ import {
   Github,
   Linkedin,
   Mail,
+  MapPin,
   Menu,
   Activity,
   Shield,
@@ -23,24 +25,41 @@ import { Badge } from "@/components/Badge";
 import { SectionTitle } from "@/components/SectionTitle";
 import { profile } from "@/lib/profile";
 
-const fade = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.5 },
-};
-
-const item = (i: number) => ({
-  initial: { opacity: 0, y: 16 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
-  transition: { duration: 0.4, delay: i * 0.07 },
-});
+function useMotion() {
+  const reduced = useReducedMotion();
+  const fade = reduced
+    ? {}
+    : {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-80px" },
+        transition: { duration: 0.5 },
+      };
+  const item = (i: number) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-40px" },
+          transition: { duration: 0.4, delay: i * 0.07 },
+        };
+  return { fade, item };
+}
 
 const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { fade, item } = useMotion();
+
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMenu(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen, closeMenu]);
   const resumeHref = `/${profile.resumeFileName}`;
   const githubFocus = ["Infrastructure Automation", "Terraform", "PowerShell", "CI/CD Tooling", "Platform Engineering"];
 
@@ -55,6 +74,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-dark text-foreground">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-dark">Skip to content</a>
 
       {/* ── Ambient glow ─────────────────────────────────────── */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
@@ -65,7 +85,10 @@ export default function Home() {
       {/* ── Header ───────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-line bg-dark/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <a href="#" className="gradient-text text-lg font-extrabold">{profile.initials}</a>
+          <a href="#" className="flex items-center gap-2">
+            <span className="gradient-text text-lg font-extrabold">{profile.name}</span>
+            <span className="hidden items-center gap-1 text-xs text-dim sm:flex"><MapPin size={11} />{profile.location}</span>
+          </a>
           <nav className="hidden gap-6 text-[0.8rem] font-medium text-dim md:flex">
             {nav.map((n) => (
               <a key={n.href} href={n.href} className="transition-colors hover:text-foreground">{n.label}</a>
@@ -94,258 +117,286 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="px-6 pb-20 pt-24 sm:pt-32 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid items-center gap-12 md:grid-cols-[1.2fr_1fr]">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.15em] text-accent">{profile.title}</p>
-              <h1 className="max-w-xl text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
-                {profile.headline.split("platforms").map((part, i) =>
-                  i === 0 ? <span key={i}>{part}<span className="gradient-text">platforms</span></span> : <span key={i}>{part}</span>
-                )}
-              </h1>
-              <p className="mt-5 max-w-lg text-[1.05rem] leading-relaxed text-dim">{profile.summary}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#projects" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
-                  View Projects <ArrowUpRight size={15} />
-                </a>
-                <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-                  Resume <Download size={15} />
-                </a>
-              </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="hidden md:block">
-              <div className="rounded-xl border border-line bg-panel p-5 font-mono text-[0.82rem] leading-relaxed shadow-card">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-red-500/70" />
-                  <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
-                  <span className="h-3 w-3 rounded-full bg-green-500/70" />
-                  <span className="ml-2 text-xs text-dim/50">terminal</span>
+      <main id="main">
+        {/* ── Hero ─────────────────────────────────────────────── */}
+        <section className="px-6 pb-20 pt-24 sm:pt-32 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.15em] text-accent">{profile.title}</p>
+                <h1 className="max-w-2xl text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight text-balance">
+                  {profile.headline.split("platforms").map((part, i) =>
+                    i === 0 ? <span key={i}>{part}<span className="gradient-text">platforms</span></span> : <span key={i}>{part}</span>
+                  )}
+                </h1>
+                <p className="mt-5 max-w-lg text-[1.05rem] leading-relaxed text-dim">{profile.summary}</p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href="#projects" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
+                    View Projects <ArrowUpRight size={15} />
+                  </a>
+                  <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
+                    Resume <Download size={15} />
+                  </a>
                 </div>
-                <div className="space-y-2.5 text-dim">
-                  <p><span className="text-accent">$</span> az pipelines list</p>
-                  <p className="text-foreground/80">50+ pipelines managed</p>
-                  <p className="mt-1"><span className="text-accent">$</span> gh repo list --limit 999 | wc -l</p>
-                  <p className="text-foreground/80">100+ repositories governed</p>
-                  <p className="mt-1"><span className="text-accent">$</span> uptime --platform</p>
-                  <p className="text-foreground/80">99.9% availability</p>
-                  <p className="mt-1"><span className="text-accent">$</span> echo $ROLE</p>
-                  <p className="text-accent-alt">Platform Engineer</p>
+                <div className="mt-8 rounded-xl border border-line bg-card p-4 font-mono text-[0.78rem] leading-relaxed shadow-card lg:hidden">
+                  <div className="mb-2 flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-red-500/70" />
+                    <span className="h-2 w-2 rounded-full bg-yellow-500/70" />
+                    <span className="h-2 w-2 rounded-full bg-green-500/70" />
+                  </div>
+                  <div className="space-y-1.5 text-dim">
+                    <p><span className="text-accent">$</span> echo $ROLE</p>
+                    <p className="text-accent-alt">Platform Engineer</p>
+                    <p><span className="text-accent">$</span> az pipelines list | wc -l</p>
+                    <p className="text-foreground/80">50+ managed</p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="hidden lg:block">
+                <div className="rounded-xl border border-line bg-card p-5 font-mono text-[0.82rem] leading-relaxed shadow-card">
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-red-500/70" />
+                    <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
+                    <span className="h-3 w-3 rounded-full bg-green-500/70" />
+                    <span className="ml-2 text-xs text-dim">terminal</span>
+                  </div>
+                  <div className="space-y-2.5 text-dim">
+                    <p><span className="text-accent">$</span> az pipelines list</p>
+                    <p className="text-foreground/80">50+ pipelines managed</p>
+                    <p className="mt-1"><span className="text-accent">$</span> gh repo list --limit 999 | wc -l</p>
+                    <p className="text-foreground/80">100+ repositories governed</p>
+                    <p className="mt-1"><span className="text-accent">$</span> uptime --platform</p>
+                    <p className="text-foreground/80">99.9% availability</p>
+                    <p className="mt-1"><span className="text-accent">$</span> echo $ROLE</p>
+                    <p className="text-accent-alt">Platform Engineer</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Metrics ──────────────────────────────────────────── */}
-      <section className="border-y border-line px-6 py-16">
-        <motion.div {...fade} className="mx-auto grid max-w-6xl grid-cols-2 gap-5 sm:grid-cols-4">
-          {profile.metrics.map((m, i) => (
-            <motion.div key={m.label} {...item(i)} className="rounded-xl border border-line bg-panel/60 p-5 text-center shadow-card backdrop-blur-sm">
-              <span className="gradient-text block text-3xl font-extrabold sm:text-4xl">{m.value}</span>
-              <span className="mt-1 block text-[0.78rem] font-semibold text-foreground/80">{m.label}</span>
-              <span className="mt-1 block text-[0.7rem] leading-snug text-dim/70">{m.note}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* ── Featured Achievements ──────────────────────────────── */}
-      <section className="px-6 py-32">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Recent Impact" title="What I've delivered" />
-          <motion.div {...fade} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {profile.achievements.map((a, i) => (
-              <motion.div key={i} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-panel/50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
-                <span className="text-[0.85rem] leading-relaxed text-dim">{a}</span>
+        {/* ── Metrics ──────────────────────────────────────────── */}
+        <section className="border-y border-line px-6 py-16">
+          <motion.div {...fade} className="mx-auto grid max-w-6xl grid-cols-2 gap-5 lg:grid-cols-4">
+            {profile.metrics.map((m, i) => (
+              <motion.div key={m.label} {...item(i)} className="rounded-xl border border-line bg-card p-5 text-center shadow-card">
+                <span className="gradient-text block text-3xl font-extrabold tabular-nums sm:text-4xl">{m.value}</span>
+                <span className="mt-1 block text-[0.78rem] font-semibold text-foreground/80">{m.label}</span>
+                <span className="mt-1 block text-[0.75rem] leading-snug text-dim">{m.note}</span>
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── About ────────────────────────────────────────────── */}
-      <section id="about" className="border-t border-line px-6 py-32">
-        <div className="mx-auto max-w-6xl">
-          <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
-            <div>
-              <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
-              <div className="flex flex-wrap gap-2">
-                {profile.certifications.map((cert) => (
-                  <span key={cert.code} className="gradient-border inline-flex rounded-full bg-panel px-3 py-1.5 text-xs font-semibold text-accent">
-                    {cert.code}
-                  </span>
-                ))}
+        {/* ── Featured Achievements ──────────────────────────────── */}
+        <section className="px-6 py-32">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Recent Impact" title="What I've delivered" center />
+            <motion.div {...fade} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {profile.achievements.map((a, i) => (
+                <motion.div key={i} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-card p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                  <span className="text-[0.85rem] leading-relaxed text-dim">{a}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── About ────────────────────────────────────────────── */}
+        <section id="about" className="border-t border-line bg-dark-alt px-6 py-32">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
+              <div>
+                <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
+                <div className="flex flex-wrap gap-2">
+                  {profile.certifications.map((cert) => (
+                    <span key={cert.code} className="gradient-border inline-flex rounded-full bg-panel px-3 py-1.5 text-xs font-semibold text-accent">
+                      {cert.code}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="space-y-4 text-[0.92rem] leading-[1.8] text-dim">
-              {profile.about.map((p) => <p key={p.slice(0, 30)}>{p}</p>)}
-              <p className="border-l-2 border-accent/30 pl-4 italic text-foreground/60">&ldquo;{profile.tagline}&rdquo;</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+              <div className="space-y-4 text-[0.92rem] leading-[1.8] text-dim">
+                {profile.about.map((p) => <p key={p.slice(0, 30)}>{p}</p>)}
+                <p className="border-l-2 border-accent/30 pl-4 italic text-foreground/60">&ldquo;{profile.tagline}&rdquo;</p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* ── Expertise ────────────────────────────────────────── */}
-      <section id="expertise" className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Capabilities" title="What I design, automate, and improve" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {profile.expertise.map((exp, i) => {
-              const Icon = expertiseIcons[i] || Cloud;
-              return (
-                <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                  <Icon className="mb-3 h-5 w-5 text-accent" />
-                  <h3 className="text-[0.95rem] font-bold">{exp.title}</h3>
-                  <p className="mt-2 text-[0.82rem] leading-relaxed text-dim">{exp.body}</p>
+        {/* ── Expertise ────────────────────────────────────────── */}
+        <section id="expertise" className="border-t border-line px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Capabilities" title="What I design, automate, and improve" />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {profile.expertise.map((exp, i) => {
+                const Icon = expertiseIcons[i] || Cloud;
+                return (
+                  <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                    <Icon className="mb-3 h-5 w-5 text-accent" />
+                    <h3 className="text-[0.95rem] font-bold">{exp.title}</h3>
+                    <p className="mt-2 text-[0.82rem] leading-relaxed text-dim">{exp.body}</p>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {exp.tags.map((t) => <Badge key={t}>{t}</Badge>)}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Projects ─────────────────────────────────────────── */}
+        <section id="projects" className="border-t border-line px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Selected work" title="Projects that compound velocity" />
+            <div className="grid gap-5 md:grid-cols-2">
+              {profile.projects.map((proj, i) => (
+                <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                  <h3 className="font-bold">{proj.title}</h3>
+                  <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
+                  <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
+                    <span className="font-semibold text-accent">Impact </span>
+                    <span className="text-foreground/70">{proj.impact}</span>
+                  </div>
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {exp.tags.map((t) => <Badge key={t}>{t}</Badge>)}
+                    {proj.tags.map((t) => <Badge key={t}>{t}</Badge>)}
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Experience ───────────────────────────────────────── */}
+        <section id="experience" className="border-t border-line bg-dark-alt px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
+            {profile.experience.map((job) => (
+              <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
+                <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                  <div>
+                    <h3 className="font-bold">{job.role}</h3>
+                    <p className="text-sm font-medium text-accent">{job.company}</p>
+                  </div>
+                  <span className="text-[0.78rem] font-medium text-dim">{job.period} · {job.location}</span>
+                </div>
+                <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                  {job.bullets.map((b) => (
+                    <li key={b} className="flex items-start gap-2.5 text-[0.82rem] leading-relaxed text-dim">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Stack ────────────────────────────────────────────── */}
+        <section className="border-t border-line px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Stack" title="Tools and technologies" />
+            <motion.div {...fade} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(profile.stack).map(([cat, tools]) => (
+                <div key={cat}>
+                  <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-dim">{cat}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {tools.map((t) => <Badge key={t}>{t}</Badge>)}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── Certifications ─────────────────────────────────── */}
+        <section id="certifications" className="border-t border-line px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Credentials" title="Certifications" />
+            <div className="grid gap-5 sm:grid-cols-2">
+              {profile.certifications.map((cert, i) => (
+                <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                  <div className="mb-3 flex items-center gap-3">
+                    <Award className="h-6 w-6 shrink-0 text-accent" />
+                    <span className="rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-0.5 text-xs font-bold text-accent">{cert.code}</span>
+                  </div>
+                  <h3 className="font-bold">{cert.title}</h3>
+                  <p className="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{cert.description}</p>
+                  <p className="mt-2 text-xs font-medium text-dim">{cert.issuer}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── GitHub Activity ─────────────────────────────────── */}
+        <section className="border-t border-line px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Open source" title="GitHub Activity" />
+            <motion.div {...fade} className="rounded-xl border border-line bg-card p-8 shadow-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+              <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+                <div className="flex-1">
+                  <p className="text-2xl font-extrabold sm:text-3xl">Active across <span className="gradient-text">50+ repositories</span></p>
+                  <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                    {githubFocus.map((t) => <Badge key={t}>{t}</Badge>)}
+                  </div>
+                </div>
+                <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
+                  View GitHub <ArrowUpRight size={15} />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── Writing ─────────────────────────────────────────── */}
+        <section className="border-t border-line bg-dark-alt px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="Writing" title="Ideas worth sharing" />
+            <div className="space-y-3">
+              {profile.posts.map((post, i) => (
+                <motion.div key={post.title} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-card p-5 shadow-card">
+                  <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <div>
+                    <span className="text-[0.88rem] font-semibold">{post.title}</span>
+                    <p className="mt-0.5 text-[0.78rem] text-dim">{post.desc}</p>
                   </div>
                 </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Projects ─────────────────────────────────────────── */}
-      <section id="projects" className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Selected work" title="Projects that compound velocity" />
-          <div className="grid gap-5 md:grid-cols-2">
-            {profile.projects.map((proj, i) => (
-              <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                <h3 className="font-bold">{proj.title}</h3>
-                <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
-                <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
-                  <span className="font-semibold text-accent">Impact </span>
-                  <span className="text-foreground/70">{proj.impact}</span>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {proj.tags.map((t) => <Badge key={t}>{t}</Badge>)}
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Experience ───────────────────────────────────────── */}
-      <section id="experience" className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
-          {profile.experience.map((job) => (
-            <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-panel/50 p-7 sm:p-8">
-              <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-                <div>
-                  <h3 className="font-bold">{job.role}</h3>
-                  <p className="text-sm font-medium text-accent">{job.company}</p>
-                </div>
-                <span className="text-[0.78rem] font-medium text-dim">{job.period} · {job.location}</span>
-              </div>
-              <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                {job.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2.5 text-[0.82rem] leading-relaxed text-dim">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Stack ────────────────────────────────────────────── */}
-      <section className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Stack" title="Tools and technologies" />
-          <motion.div {...fade} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Object.entries(profile.stack).map(([cat, tools]) => (
-              <div key={cat}>
-                <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-dim/60">{cat}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {tools.map((t) => <Badge key={t}>{t}</Badge>)}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Certifications ─────────────────────────────────── */}
-      <section id="certifications" className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Credentials" title="Certifications" />
-          <div className="grid gap-5 sm:grid-cols-2">
-            {profile.certifications.map((cert, i) => (
-              <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                <div className="mb-3 flex items-center gap-3">
-                  <Award className="h-6 w-6 shrink-0 text-accent" />
-                  <span className="rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-0.5 text-xs font-bold text-accent">{cert.code}</span>
-                </div>
-                <h3 className="font-bold">{cert.title}</h3>
-                <p className="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{cert.description}</p>
-                <p className="mt-2 text-xs font-medium text-dim/50">{cert.issuer}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── GitHub Activity ─────────────────────────────────── */}
-      <section className="border-t border-line px-6 py-36">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Open source" title="GitHub Activity" />
-          <motion.div {...fade} className="rounded-xl border border-line bg-panel/50 p-8 transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-            <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-              <div className="flex-1">
-                <p className="text-2xl font-extrabold sm:text-3xl">50+ <span className="text-dim font-medium text-base">Repositories</span></p>
-                <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
-                  {githubFocus.map((t) => <Badge key={t}>{t}</Badge>)}
-                </div>
-              </div>
-              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
-                View GitHub <ArrowUpRight size={15} />
-              </a>
+              ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
+            <p className="mt-4 text-xs text-dim">Articles in progress — check back soon.</p>
+          </div>
+        </section>
 
-      {/* ── Contact ──────────────────────────────────────────── */}
-      <section id="contact" className="border-t border-line px-6 py-36">
-        <motion.div {...fade} className="mx-auto max-w-6xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Ready to modernize your <span className="gradient-text">CI/CD platform?</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
-            Whether it's cloud automation, developer experience, or platform engineering &mdash; let's talk.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
+        {/* ── Contact ────────────────────────────────────────── */}
+        <section id="contact" className="border-t border-line bg-dark-alt px-6 py-36">
+          <motion.div {...fade} className="mx-auto max-w-6xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Ready to modernize your <span className="gradient-text">CI/CD platform?</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
+              Whether it&apos;s cloud automation, developer experience, or platform engineering &mdash; let&apos;s talk.
+            </p>
+            <a href={`mailto:${profile.email}`} className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark">
               <Mail size={15} /> Email me
             </a>
-            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Linkedin size={15} /> LinkedIn
-            </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Github size={15} /> GitHub
-            </a>
-            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Download size={15} /> Resume
-            </a>
-          </div>
-        </motion.div>
-      </section>
+            <div className="mt-5 flex justify-center gap-4">
+              <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="GitHub"><Github size={20} /></a>
+              <a href={resumeHref} download className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="Resume"><Download size={20} /></a>
+            </div>
+          </motion.div>
+        </section>
+      </main>
 
-      {/* ── Footer ───────────────────────────────────────────── */}
+      {/* ── Footer ─────────────────────────────────────────── */}
       <footer className="border-t border-line px-6 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim/50 sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim sm:flex-row">
           <span>&copy; {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
           <div className="flex gap-4">
             <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={14} /></a>
