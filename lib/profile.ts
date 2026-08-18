@@ -1,11 +1,11 @@
 export const profile = {
   name: "Harshith Julapelli",
-  initials: "HJ",
+  initials: "Harsh",
   title: "DevOps Configuration Engineer | SRE | Platform Automation",
   location: "Plano, Texas",
   githubUser: "Harshithj88",
   githubUrl: "https://github.com/Harshithj88",
-  linkedInUrl: "https://www.linkedin.com/",
+  linkedInUrl: "https://www.linkedin.com/in/hjulapelli/",
   email: "your.email@example.com",
   resumeFileName: "Harshith-Julapelli-Resume.pdf",
   headline:

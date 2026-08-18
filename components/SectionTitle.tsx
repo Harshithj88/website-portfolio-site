@@ -1,3 +1,5 @@
+import { Eyebrow } from "./Badge";
+
 export function SectionTitle({
   eyebrow,
   title,
@@ -8,15 +10,15 @@ export function SectionTitle({
   body?: string;
 }) {
   return (
-    <div className="mx-auto mb-14 max-w-3xl text-center">
-      <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">
-        {eyebrow}
-      </p>
-      <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+    <div className="mb-10 max-w-3xl">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className="mt-4 text-3xl font-bold text-primary sm:text-4xl">
         {title}
       </h2>
       {body ? (
-        <p className="mt-4 text-base leading-7 text-slate-400">{body}</p>
+        <p className="mt-3 max-w-[34rem] text-base font-medium leading-[1.8] text-primary">
+          {body}
+        </p>
       ) : null}
     </div>
   );
