@@ -1,7 +1,7 @@
 export const profile = {
   name: "Harshith Julapelli",
   initials: "Harsh",
-  title: "DevOps Configuration Engineer | SRE | Platform Automation",
+  title: "Platform Engineer | DevOps | SRE | Cloud Automation",
   location: "Plano, Texas",
   githubUser: "Harshithj88",
   githubUrl: "https://github.com/Harshithj88",
@@ -9,11 +9,11 @@ export const profile = {
   email: "your.email@example.com",
   resumeFileName: "Harshith-Julapelli-Resume.pdf",
   headline:
-    "I design and automate platforms that help engineering teams ship faster with confidence.",
+    "I build reliable engineering platforms that help teams ship faster with confidence.",
   summary:
-    "I'm Harshith Julapelli, a DevOps Configuration Engineer building scalable cloud platforms, CI/CD pipelines, and developer workflows that improve reliability, security, and deployment velocity.",
+    "Platform automation engineer focused on CI/CD modernization, infrastructure as code, GitHub Actions, Azure DevOps, governance, and developer enablement.",
   about: [
-    "I'm a DevOps Configuration Engineer with deep experience in enterprise platform operations, CI/CD automation, and infrastructure reliability. My work sits at the intersection of DevOps, release engineering, and developer enablement — where manual process becomes repeatable systems.",
+    "I help engineering organizations eliminate operational friction through platform automation, CI/CD modernization, and cloud-native infrastructure. My work turns manual, fragile processes into reliable systems that help teams ship faster with confidence.",
     "At loanDepot, I manage Azure DevOps and GitHub Actions platforms that support 100+ repositories across multiple engineering teams. I design automation that doesn't just work — it creates leverage, enabling teams to ship faster while maintaining the governance and security that enterprise environments demand.",
     "I believe the best platform engineers are invisible: when the systems you build are working well, nobody notices. That's the goal — reliability so consistent it becomes the backdrop, not the headline.",
   ],
@@ -22,22 +22,22 @@ export const profile = {
   metrics: [
     {
       value: "50+",
-      label: "CI/CD pipelines managed",
-      note: "Automated build, test, and release workflows across enterprise teams",
+      label: "CI/CD Pipelines Automated",
+      note: "Enterprise delivery workflows standardized across teams",
     },
     {
       value: "100+",
-      label: "Repositories supported",
+      label: "Repositories Governed",
       note: "Modern Git workflows, branch policies, and governance at scale",
     },
     {
-      value: "1000s",
-      label: "Automated deployments",
+      value: "1000+",
+      label: "Deployments Enabled",
       note: "Consistent, repeatable releases through pipeline automation",
     },
     {
       value: "99.9%",
-      label: "Platform reliability",
+      label: "Platform Availability",
       note: "Uptime-focused infrastructure and incident response practices",
     },
   ],
@@ -46,11 +46,13 @@ export const profile = {
       title: "Microsoft Certified: DevOps Engineer Expert",
       issuer: "Microsoft",
       code: "AZ-400",
+      description: "Advanced DevOps practices, CI/CD strategy, infrastructure automation, and release governance.",
     },
     {
       title: "Microsoft Certified: Azure Developer Associate",
       issuer: "Microsoft",
       code: "AZ-204",
+      description: "Azure development, cloud-native solutions, integrations, and application deployment.",
     },
   ],
   stack: {
@@ -95,35 +97,35 @@ export const profile = {
   ],
   projects: [
     {
-      title: "Enterprise Repository Migration",
+      title: "Source Control Modernization",
       summary:
-        "Migrated development teams from legacy source control systems into modern Git workflows, reducing merge conflicts by streamlining branching strategies and minimizing operational risk during transition.",
+        "Led enterprise-wide migration from legacy source control into modern Git workflows. Designed branching strategies, created enablement documentation, and provided cross-functional support that minimized operational risk during transition.",
       impact:
-        "Improved team readiness for modern branching, repository ownership, and migration follow-up.",
-      tags: ["Git", "Azure DevOps", "Migration", "Documentation"],
+        "Accelerated team adoption of modern Git workflows, improved repository ownership, and reduced merge conflicts across engineering teams.",
+      tags: ["Git", "Azure DevOps", "Migration", "Developer Enablement"],
     },
     {
       title: "GitHub Actions Runner Platform",
       summary:
-        "Implemented and managed scalable self-hosted runner infrastructure supporting enterprise development teams — improving build throughput and reducing external dependency on hosted runners.",
+        "Built and managed scalable self-hosted GitHub Actions runner infrastructure for enterprise engineering teams, improving CI/CD reliability while reducing dependency on hosted runners.",
       impact:
-        "Helped teams operate workflow automation through clearer access models and runner administration practices.",
+        "Enabled faster, more controlled build execution with improved governance around runner administration and access.",
       tags: ["GitHub Actions", "Self-hosted Runners", "CI/CD", "Governance"],
     },
     {
       title: "Infrastructure as Code Framework",
       summary:
-        "Built reusable Terraform and Bicep modules enabling consistent and secure cloud deployments. Teams provision compliant infrastructure through self-service patterns instead of manual ticket-based requests.",
+        "Created reusable Terraform and Bicep modules that replaced manual, ticket-based provisioning with self-service patterns. Teams deploy compliant infrastructure consistently across all environments.",
       impact:
-        "Enabled consistent, secure, and repeatable cloud provisioning across all environments.",
+        "Improved provisioning consistency, reduced configuration drift, and strengthened audit readiness across cloud environments.",
       tags: ["Terraform", "Bicep", "Azure", "IaC"],
     },
     {
       title: "Release Governance Automation",
       summary:
-        "Automated approval gates and deployment checks across lower environments, reducing manual effort and improving deployment quality. Balanced speed with control through configurable access models.",
+        "Automated approval gates, deployment checks, and configurable access models across lower environments — balancing deployment speed with operational control and compliance requirements.",
       impact:
-        "Reduced ambiguity around who can approve, deploy, and administer lower-environment releases.",
+        "Eliminated ambiguity around release approvals, reduced manual deployment effort, and improved deployment quality.",
       tags: ["Azure DevOps", "Approvals", "Release Engineering", "Controls"],
     },
   ],
