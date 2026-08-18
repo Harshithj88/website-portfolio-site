@@ -12,6 +12,7 @@ import {
   Github,
   Linkedin,
   Mail,
+  MapPin,
   Menu,
   Activity,
   Shield,
@@ -65,7 +66,10 @@ export default function Home() {
       {/* ── Header ───────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-line bg-dark/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <a href="#" className="gradient-text text-lg font-extrabold">{profile.initials}</a>
+          <a href="#" className="flex items-center gap-2">
+            <span className="gradient-text text-lg font-extrabold">{profile.name}</span>
+            <span className="hidden items-center gap-1 text-xs text-dim sm:flex"><MapPin size={11} />{profile.location}</span>
+          </a>
           <nav className="hidden gap-6 text-[0.8rem] font-medium text-dim md:flex">
             {nav.map((n) => (
               <a key={n.href} href={n.href} className="transition-colors hover:text-foreground">{n.label}</a>
@@ -100,7 +104,7 @@ export default function Home() {
           <div className="grid items-center gap-12 md:grid-cols-[1.2fr_1fr]">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.15em] text-accent">{profile.title}</p>
-              <h1 className="max-w-xl text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
+              <h1 className="max-w-2xl text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight text-balance">
                 {profile.headline.split("platforms").map((part, i) =>
                   i === 0 ? <span key={i}>{part}<span className="gradient-text">platforms</span></span> : <span key={i}>{part}</span>
                 )}
@@ -114,14 +118,27 @@ export default function Home() {
                   Resume <Download size={15} />
                 </a>
               </div>
+              <div className="mt-8 rounded-xl border border-line bg-card p-4 font-mono text-[0.78rem] leading-relaxed shadow-card md:hidden">
+                <div className="mb-2 flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-red-500/70" />
+                  <span className="h-2 w-2 rounded-full bg-yellow-500/70" />
+                  <span className="h-2 w-2 rounded-full bg-green-500/70" />
+                </div>
+                <div className="space-y-1.5 text-dim">
+                  <p><span className="text-accent">$</span> echo $ROLE</p>
+                  <p className="text-accent-alt">Platform Engineer</p>
+                  <p><span className="text-accent">$</span> az pipelines list | wc -l</p>
+                  <p className="text-foreground/80">50+ managed</p>
+                </div>
+              </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="hidden md:block">
-              <div className="rounded-xl border border-line bg-panel p-5 font-mono text-[0.82rem] leading-relaxed shadow-card">
+              <div className="rounded-xl border border-line bg-card p-5 font-mono text-[0.82rem] leading-relaxed shadow-card">
                 <div className="mb-3 flex items-center gap-2">
                   <span className="h-3 w-3 rounded-full bg-red-500/70" />
                   <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
                   <span className="h-3 w-3 rounded-full bg-green-500/70" />
-                  <span className="ml-2 text-xs text-dim/50">terminal</span>
+                  <span className="ml-2 text-xs text-dim">terminal</span>
                 </div>
                 <div className="space-y-2.5 text-dim">
                   <p><span className="text-accent">$</span> az pipelines list</p>
@@ -143,10 +160,10 @@ export default function Home() {
       <section className="border-y border-line px-6 py-16">
         <motion.div {...fade} className="mx-auto grid max-w-6xl grid-cols-2 gap-5 sm:grid-cols-4">
           {profile.metrics.map((m, i) => (
-            <motion.div key={m.label} {...item(i)} className="rounded-xl border border-line bg-panel/60 p-5 text-center shadow-card backdrop-blur-sm">
-              <span className="gradient-text block text-3xl font-extrabold sm:text-4xl">{m.value}</span>
+            <motion.div key={m.label} {...item(i)} className="rounded-xl border border-line bg-card p-5 text-center shadow-card">
+              <span className="gradient-text block text-3xl font-extrabold tabular-nums sm:text-4xl">{m.value}</span>
               <span className="mt-1 block text-[0.78rem] font-semibold text-foreground/80">{m.label}</span>
-              <span className="mt-1 block text-[0.7rem] leading-snug text-dim/70">{m.note}</span>
+              <span className="mt-1 block text-[0.75rem] leading-snug text-dim">{m.note}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -155,10 +172,10 @@ export default function Home() {
       {/* ── Featured Achievements ──────────────────────────────── */}
       <section className="px-6 py-32">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="Recent Impact" title="What I've delivered" />
+          <SectionTitle eyebrow="Recent Impact" title="What I've delivered" center />
           <motion.div {...fade} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {profile.achievements.map((a, i) => (
-              <motion.div key={i} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-panel/50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+              <motion.div key={i} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-card p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                 <span className="text-[0.85rem] leading-relaxed text-dim">{a}</span>
               </motion.div>
@@ -168,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* ── About ────────────────────────────────────────────── */}
-      <section id="about" className="border-t border-line px-6 py-32">
+      <section id="about" className="border-t border-line bg-dark-alt px-6 py-32">
         <div className="mx-auto max-w-6xl">
           <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
             <div>
@@ -197,7 +214,7 @@ export default function Home() {
             {profile.expertise.map((exp, i) => {
               const Icon = expertiseIcons[i] || Cloud;
               return (
-                <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                <motion.div key={exp.title} {...item(i)} className="group rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                   <Icon className="mb-3 h-5 w-5 text-accent" />
                   <h3 className="text-[0.95rem] font-bold">{exp.title}</h3>
                   <p className="mt-2 text-[0.82rem] leading-relaxed text-dim">{exp.body}</p>
@@ -217,7 +234,7 @@ export default function Home() {
           <SectionTitle eyebrow="Selected work" title="Projects that compound velocity" />
           <div className="grid gap-5 md:grid-cols-2">
             {profile.projects.map((proj, i) => (
-              <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+              <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                 <h3 className="font-bold">{proj.title}</h3>
                 <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
                 <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
@@ -234,11 +251,11 @@ export default function Home() {
       </section>
 
       {/* ── Experience ───────────────────────────────────────── */}
-      <section id="experience" className="border-t border-line px-6 py-36">
+      <section id="experience" className="border-t border-line bg-dark-alt px-6 py-36">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
           {profile.experience.map((job) => (
-            <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-panel/50 p-7 sm:p-8">
+            <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
               <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
                 <div>
                   <h3 className="font-bold">{job.role}</h3>
@@ -266,7 +283,7 @@ export default function Home() {
           <motion.div {...fade} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Object.entries(profile.stack).map(([cat, tools]) => (
               <div key={cat}>
-                <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-dim/60">{cat}</p>
+                <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-dim">{cat}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {tools.map((t) => <Badge key={t}>{t}</Badge>)}
                 </div>
@@ -282,14 +299,14 @@ export default function Home() {
           <SectionTitle eyebrow="Credentials" title="Certifications" />
           <div className="grid gap-5 sm:grid-cols-2">
             {profile.certifications.map((cert, i) => (
-              <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-panel/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+              <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                 <div className="mb-3 flex items-center gap-3">
                   <Award className="h-6 w-6 shrink-0 text-accent" />
                   <span className="rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-0.5 text-xs font-bold text-accent">{cert.code}</span>
                 </div>
                 <h3 className="font-bold">{cert.title}</h3>
                 <p className="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{cert.description}</p>
-                <p className="mt-2 text-xs font-medium text-dim/50">{cert.issuer}</p>
+                <p className="mt-2 text-xs font-medium text-dim">{cert.issuer}</p>
               </motion.div>
             ))}
           </div>
@@ -300,7 +317,7 @@ export default function Home() {
       <section className="border-t border-line px-6 py-36">
         <div className="mx-auto max-w-6xl">
           <SectionTitle eyebrow="Open source" title="GitHub Activity" />
-          <motion.div {...fade} className="rounded-xl border border-line bg-panel/50 p-8 transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+          <motion.div {...fade} className="rounded-xl border border-line bg-card p-8 shadow-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
             <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
               <div className="flex-1">
                 <p className="text-2xl font-extrabold sm:text-3xl">50+ <span className="text-dim font-medium text-base">Repositories</span></p>
@@ -317,7 +334,7 @@ export default function Home() {
       </section>
 
       {/* ── Contact ──────────────────────────────────────────── */}
-      <section id="contact" className="border-t border-line px-6 py-36">
+      <section id="contact" className="border-t border-line bg-dark-alt px-6 py-36">
         <motion.div {...fade} className="mx-auto max-w-6xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
@@ -326,26 +343,20 @@ export default function Home() {
           <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
             Whether it's cloud automation, developer experience, or platform engineering &mdash; let's talk.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
-              <Mail size={15} /> Email me
-            </a>
-            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Linkedin size={15} /> LinkedIn
-            </a>
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Github size={15} /> GitHub
-            </a>
-            <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
-              <Download size={15} /> Resume
-            </a>
+          <a href={`mailto:${profile.email}`} className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark">
+            <Mail size={15} /> Email me
+          </a>
+          <div className="mt-5 flex justify-center gap-4">
+            <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="LinkedIn"><Linkedin size={20} /></a>
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="GitHub"><Github size={20} /></a>
+            <a href={resumeHref} download className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="Resume"><Download size={20} /></a>
           </div>
         </motion.div>
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
       <footer className="border-t border-line px-6 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim/50 sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim sm:flex-row">
           <span>&copy; {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
           <div className="flex gap-4">
             <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={14} /></a>
