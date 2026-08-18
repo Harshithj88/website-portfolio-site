@@ -6,7 +6,7 @@ export const profile = {
   githubUser: "Harshithj88",
   githubUrl: "https://github.com/Harshithj88",
   linkedInUrl: "https://www.linkedin.com/in/hjulapelli/",
-  email: "your.email@example.com",
+  email: "harsh.julapelli@gmail.com",
   resumeFileName: "Harshith-Julapelli-Resume.pdf",
   headline:
     "I build reliable engineering platforms that help teams ship faster with confidence.",

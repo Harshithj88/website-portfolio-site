@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  BookOpen,
   ArrowUpRight,
   Award,
+  BookOpen,
   CheckCircle2,
   Cloud,
   Download,
@@ -27,39 +27,64 @@ import { profile } from "@/lib/profile";
 
 function useMotion() {
   const reduced = useReducedMotion();
-  const fade = reduced
-    ? {}
-    : {
-        initial: { opacity: 0, y: 20 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: "-80px" },
-        transition: { duration: 0.5 },
-      };
-  const item = (i: number) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 16 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, margin: "-40px" },
-          transition: { duration: 0.4, delay: i * 0.07 },
-        };
+  const fade = {
+    initial: reduced ? false : { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-80px" },
+    transition: { duration: reduced ? 0 : 0.5 },
+  };
+  const item = (i: number) => ({
+    initial: reduced ? false : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-40px" },
+    transition: { duration: reduced ? 0 : 0.4, delay: reduced ? 0 : i * 0.07 },
+  });
   return { fade, item };
 }
+
+const sectionIds = ["about", "expertise", "projects", "experience", "certifications", "writing", "contact"];
 
 const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { fade, item } = useMotion();
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    hamburgerRef.current?.focus();
+  }, []);
+
   useEffect(() => {
     if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMenu(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { closeMenu(); return; }
+      if (e.key !== "Tab" || !mobileNavRef.current) return;
+      const focusable = mobileNavRef.current.querySelectorAll<HTMLElement>("a, button");
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
     document.addEventListener("keydown", onKey);
+    const firstLink = mobileNavRef.current?.querySelector<HTMLElement>("a");
+    firstLink?.focus();
     return () => document.removeEventListener("keydown", onKey);
   }, [menuOpen, closeMenu]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
+      { rootMargin: "-20% 0px -60% 0px" }
+    );
+    sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, []);
+
   const resumeHref = `/${profile.resumeFileName}`;
   const githubFocus = ["Infrastructure Automation", "Terraform", "PowerShell", "CI/CD Tooling", "Platform Engineering"];
 
@@ -69,6 +94,7 @@ export default function Home() {
     { label: "Projects", href: "#projects" },
     { label: "Experience", href: "#experience" },
     { label: "Certifications", href: "#certifications" },
+    { label: "Writing", href: "#writing" },
     { label: "Contact", href: "#contact" },
   ];
 
@@ -87,24 +113,24 @@ export default function Home() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <a href="#" className="flex items-center gap-2">
             <span className="gradient-text text-lg font-extrabold">{profile.name}</span>
-            <span className="hidden items-center gap-1 text-xs text-dim sm:flex"><MapPin size={11} />{profile.location}</span>
+            <span className="hidden items-center gap-1 text-xs text-dim lg:flex"><MapPin size={11} />{profile.location}</span>
           </a>
-          <nav className="hidden gap-6 text-[0.8rem] font-medium text-dim md:flex">
+          <nav className="hidden gap-5 text-[0.8rem] font-medium text-dim lg:flex">
             {nav.map((n) => (
-              <a key={n.href} href={n.href} className="transition-colors hover:text-foreground">{n.label}</a>
+              <a key={n.href} href={n.href} className={`transition-colors hover:text-foreground ${activeSection === n.href.slice(1) ? "text-accent" : ""}`} aria-current={activeSection === n.href.slice(1) ? "true" : undefined}>{n.label}</a>
             ))}
           </nav>
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-3 lg:flex">
             <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={17} /></a>
             <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="GitHub"><Github size={17} /></a>
           </div>
-          <button className="text-dim md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen} aria-controls="mobile-nav">
+          <button ref={hamburgerRef} className="text-dim lg:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen} aria-controls="mobile-nav">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
         {menuOpen && (
-          <motion.div id="mobile-nav" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-line bg-dark md:hidden">
-            <div className="flex flex-col gap-4 px-6 py-5 text-sm font-medium text-dim">
+          <motion.div id="mobile-nav" ref={mobileNavRef} initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-line bg-dark lg:hidden">
+            <div className="flex flex-col gap-4 px-6 py-5 text-sm font-medium text-dim" role="menu">
               {nav.map((n) => (
                 <a key={n.href} href={n.href} onClick={() => setMenuOpen(false)} className="hover:text-foreground">{n.label}</a>
               ))}
@@ -148,7 +174,7 @@ export default function Home() {
                     <p><span className="text-accent">$</span> echo $ROLE</p>
                     <p className="text-accent-alt">Platform Engineer</p>
                     <p><span className="text-accent">$</span> az pipelines list | wc -l</p>
-                    <p className="text-foreground/80">50+ managed</p>
+                    <p className="text-foreground/80">{profile.metrics[0].value} managed</p>
                   </div>
                 </div>
               </motion.div>
@@ -162,9 +188,9 @@ export default function Home() {
                   </div>
                   <div className="space-y-2.5 text-dim">
                     <p><span className="text-accent">$</span> az pipelines list</p>
-                    <p className="text-foreground/80">50+ pipelines managed</p>
+                    <p className="text-foreground/80">{profile.metrics[0].value} pipelines managed</p>
                     <p className="mt-1"><span className="text-accent">$</span> gh repo list --limit 999 | wc -l</p>
-                    <p className="text-foreground/80">100+ repositories governed</p>
+                    <p className="text-foreground/80">{profile.metrics[1].value} repositories governed</p>
                     <p className="mt-1"><span className="text-accent">$</span> uptime --platform</p>
                     <p className="text-foreground/80">99.9% availability</p>
                     <p className="mt-1"><span className="text-accent">$</span> echo $ROLE</p>
@@ -340,7 +366,7 @@ export default function Home() {
             <motion.div {...fade} className="rounded-xl border border-line bg-card p-8 shadow-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
               <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
                 <div className="flex-1">
-                  <p className="text-2xl font-extrabold sm:text-3xl">Active across <span className="gradient-text">50+ repositories</span></p>
+                  <p className="text-2xl font-extrabold sm:text-3xl">Active across <span className="gradient-text">multiple repositories</span></p>
                   <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
                     {githubFocus.map((t) => <Badge key={t}>{t}</Badge>)}
                   </div>
@@ -354,21 +380,18 @@ export default function Home() {
         </section>
 
         {/* ── Writing ─────────────────────────────────────────── */}
-        <section className="border-t border-line bg-dark-alt px-6 py-36">
+        <section id="writing" className="border-t border-line bg-dark px-6 py-36">
           <div className="mx-auto max-w-6xl">
             <SectionTitle eyebrow="Writing" title="Ideas worth sharing" />
-            <div className="space-y-3">
-              {profile.posts.map((post, i) => (
-                <motion.div key={post.title} {...item(i)} className="flex items-start gap-3 rounded-xl border border-line bg-card p-5 shadow-card">
-                  <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                  <div>
-                    <span className="text-[0.88rem] font-semibold">{post.title}</span>
-                    <p className="mt-0.5 text-[0.78rem] text-dim">{post.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <p className="mt-4 text-xs text-dim">Articles in progress — check back soon.</p>
+            <motion.div {...fade} className="rounded-xl border border-line bg-card p-6 shadow-card">
+              <div className="flex items-center gap-3">
+                <BookOpen className="h-5 w-5 shrink-0 text-accent" />
+                <div>
+                  <p className="text-[0.92rem] font-semibold">Articles coming soon</p>
+                  <p className="mt-0.5 text-[0.82rem] text-dim">Topics include self-hosted runners, Terraform module patterns, repository migrations, and CI/CD debugging.</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -382,13 +405,13 @@ export default function Home() {
             <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
               Whether it&apos;s cloud automation, developer experience, or platform engineering &mdash; let&apos;s talk.
             </p>
-            <a href={`mailto:${profile.email}`} className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark">
+            <a href={`mailto:${profile.email}`} className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
               <Mail size={15} /> Email me
             </a>
             <div className="mt-5 flex justify-center gap-4">
-              <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="LinkedIn"><Linkedin size={20} /></a>
-              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="GitHub"><Github size={20} /></a>
-              <a href={resumeHref} download className="text-dim transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded" aria-label="Resume"><Download size={20} /></a>
+              <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="GitHub"><Github size={20} /></a>
+              <a href={resumeHref} download className="text-dim transition-colors hover:text-foreground" aria-label="Resume"><Download size={20} /></a>
             </div>
           </motion.div>
         </section>
