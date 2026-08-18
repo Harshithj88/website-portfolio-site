@@ -8,8 +8,6 @@
   --color-accent-purple: #6D4B8A;
   --color-accent-blue: #8897B8;
   --color-accent-tan: #B8A295;
-  --shadow-card: 0 24px 60px rgba(13, 47, 63, 0.13);
-  --shadow-card-sm: 0 14px 28px rgba(13, 47, 63, 0.08);
 }
 
 * {
@@ -18,11 +16,6 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   font-family: "Eudoxus Sans", sans-serif;
-  scrollbar-width: none;
-}
-
-*::-webkit-scrollbar {
-  display: none;
 }
 
 a, button, [role="button"] {
@@ -40,27 +33,4 @@ body {
 ::selection {
   background: var(--color-secondary);
   color: var(--color-cream);
-}
-
-.scallop-bottom::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -18px;
-  height: 18px;
-  background: radial-gradient(circle at 18px 0, rgba(13, 47, 63, 0.92) 18px, transparent 19px) 0 0 / 36px 18px repeat-x;
-  pointer-events: none;
-}
-
-.scallop-top::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 18px;
-  background: radial-gradient(circle at 18px 0, var(--color-cream) 18px, transparent 19px) 0 0 / 36px 18px repeat-x;
-  opacity: 0.95;
-  z-index: 2;
 }
