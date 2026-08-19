@@ -11,11 +11,11 @@ export const profile = {
   headline:
     "I build reliable engineering platforms that help teams ship faster with confidence.",
   summary:
-    "Platform automation engineer focused on CI/CD modernization, infrastructure as code, GitHub Actions, Azure DevOps, governance, and developer enablement.",
+    "Microsoft Certified Azure DevOps Engineer Expert focused on building reliable, scalable, and secure engineering platforms that enable development teams to deliver software efficiently.",
   about: [
-    "I help engineering organizations eliminate operational friction through platform automation, CI/CD modernization, and cloud-native infrastructure. My work turns manual, fragile processes into reliable systems that help teams ship faster with confidence.",
-    "At loanDepot, I manage Azure DevOps and GitHub Actions platforms that support 100+ repositories across multiple engineering teams. I design automation that doesn't just work — it creates leverage, enabling teams to ship faster while maintaining the governance and security that enterprise environments demand.",
-    "I believe the best platform engineers are invisible: when the systems you build are working well, nobody notices. That's the goal — reliability so consistent it becomes the backdrop, not the headline.",
+    "I'm a Microsoft Certified Azure DevOps Engineer Expert with experience in DevOps, Site Reliability Engineering (SRE), cloud operations, and platform automation. My focus is on building reliable, scalable, and secure engineering platforms that enable development teams to deliver software efficiently while maintaining high availability and operational excellence.",
+    "I enjoy solving complex infrastructure and reliability challenges through automation, observability, and engineering best practices. My areas of expertise include Azure DevOps, GitHub Enterprise & GitHub Actions, CI/CD Pipeline Engineering, Infrastructure as Code, Platform Engineering, Monitoring & Observability, Cloud Automation, Release Engineering, Incident Response, and Operational Excellence.",
+    "Throughout my career, I have partnered with development, security, and business teams to improve deployment reliability, reduce manual operational effort, strengthen governance, and increase platform stability.",
   ],
   achievements: [
     "Supported 100+ repositories across enterprise engineering teams",
@@ -25,7 +25,7 @@ export const profile = {
     "Improved deployment governance and release automation",
   ],
   tagline:
-    "I don't just automate tasks — I design systems that create leverage for engineering teams.",
+    "Improving system reliability, automating operational workflows, reducing deployment risk, and strengthening DevOps and SRE practices.",
   metrics: [
     {
       value: "50+",
