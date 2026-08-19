@@ -234,6 +234,32 @@ export const profile = {
       ],
     },
   ],
+  recommendations: [
+    {
+      name: "Placeholder Name",
+      title: "Senior Engineering Manager",
+      company: "Company Name",
+      quote: "Placeholder recommendation text. Replace with actual LinkedIn recommendation.",
+    },
+    {
+      name: "Placeholder Name",
+      title: "Staff DevOps Engineer",
+      company: "Company Name",
+      quote: "Placeholder recommendation text. Replace with actual LinkedIn recommendation.",
+    },
+    {
+      name: "Placeholder Name",
+      title: "Principal Software Engineer",
+      company: "Company Name",
+      quote: "Placeholder recommendation text. Replace with actual LinkedIn recommendation.",
+    },
+    {
+      name: "Placeholder Name",
+      title: "VP of Engineering",
+      company: "Company Name",
+      quote: "Placeholder recommendation text. Replace with actual LinkedIn recommendation.",
+    },
+  ],
   posts: [
     {
       title: "Building Secure Self-Hosted GitHub Runners at Scale",

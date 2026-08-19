@@ -20,6 +20,7 @@ import {
   Terminal,
   Workflow,
   X,
+  Quote,
 } from "lucide-react";
 import { Badge } from "@/components/Badge";
 import { SectionTitle } from "@/components/SectionTitle";
@@ -42,7 +43,7 @@ function useMotion() {
   return { fade, item };
 }
 
-const sectionIds = ["about", "expertise", "projects", "experience", "certifications", "writing", "contact"];
+const sectionIds = ["about", "expertise", "projects", "experience", "certifications", "recommendations", "writing", "contact"];
 
 const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 
@@ -94,6 +95,7 @@ export default function Home() {
     { label: "Projects", href: "#projects" },
     { label: "Experience", href: "#experience" },
     { label: "Certifications", href: "#certifications" },
+    { label: "Recommendations", href: "#recommendations" },
     { label: "Writing", href: "#writing" },
     { label: "Contact", href: "#contact" },
   ];
@@ -376,6 +378,25 @@ export default function Home() {
                 </a>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* ── Recommendations ──────────────────────────────── */}
+        <section id="recommendations" className="border-t border-line bg-dark-alt px-6 py-36">
+          <div className="mx-auto max-w-6xl">
+            <SectionTitle eyebrow="What others say" title="Recommendations" />
+            <div className="grid gap-5 md:grid-cols-2">
+              {profile.recommendations.map((rec, i) => (
+                <motion.blockquote key={`${rec.name}-${i}`} {...item(i)} className="flex flex-col rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                  <Quote className="mb-3 h-5 w-5 shrink-0 text-accent/40" />
+                  <p className="flex-1 text-[0.85rem] leading-relaxed text-dim italic">&ldquo;{rec.quote}&rdquo;</p>
+                  <footer className="mt-4 border-t border-line pt-4">
+                    <p className="text-[0.88rem] font-semibold">{rec.name}</p>
+                    <p className="text-[0.78rem] text-dim">{rec.title}, {rec.company}</p>
+                  </footer>
+                </motion.blockquote>
+              ))}
+            </div>
           </div>
         </section>
 
