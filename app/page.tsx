@@ -5,7 +5,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   Award,
-  BookOpen,
   CheckCircle2,
   Cloud,
   Download,
@@ -20,8 +19,8 @@ import {
   Terminal,
   Workflow,
   X,
-  Quote,
 } from "lucide-react";
+import Image from "next/image";
 import { Badge } from "@/components/Badge";
 import { SectionTitle } from "@/components/SectionTitle";
 import { profile } from "@/lib/profile";
@@ -43,7 +42,7 @@ function useMotion() {
   return { fade, item };
 }
 
-const sectionIds = ["about", "expertise", "projects", "experience", "certifications", "recommendations", "writing", "contact"];
+const sectionIds = ["about", "expertise", "projects", "experience", "certifications", "recommendations", "contact"];
 
 const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 
@@ -51,7 +50,9 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [carouselPage, setCarouselPage] = useState(0);
-  const carouselPerPage = 3;
+  const [carouselPerPage, setCarouselPerPage] = useState(1);
+  const [expandedJobs, setExpandedJobs] = useState<Set<string>>(new Set());
+  const [expandedQuotes, setExpandedQuotes] = useState<Set<string>>(new Set());
   const { fade, item } = useMotion();
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLDivElement>(null);
@@ -88,6 +89,20 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const getPerPage = () => (window.innerWidth >= 1024 ? 3 : 1);
+    setCarouselPerPage(getPerPage());
+    const onResize = () => {
+      const pp = getPerPage();
+      setCarouselPerPage(pp);
+      setCarouselPage((prev) => Math.min(prev, Math.ceil(profile.recommendations.length / pp) - 1));
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const totalPages = Math.ceil(profile.recommendations.length / carouselPerPage);
+
   const resumeHref = `/${profile.resumeFileName}`;
   const githubFocus = ["Infrastructure Automation", "Terraform", "PowerShell", "CI/CD Tooling", "Platform Engineering"];
 
@@ -98,7 +113,6 @@ export default function Home() {
     { label: "Experience", href: "#experience" },
     { label: "Certifications", href: "#certifications" },
     { label: "Testimonials", href: "#recommendations" },
-    { label: "Writing", href: "#writing" },
     { label: "Contact", href: "#contact" },
   ];
 
@@ -117,7 +131,7 @@ export default function Home() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <a href="#" className="flex items-center gap-2">
             <span className="gradient-text text-lg font-extrabold">{profile.name}</span>
-            <span className="hidden items-center gap-1 text-xs text-dim lg:flex"><MapPin size={11} />{profile.location}</span>
+            <span className="hidden items-center gap-1 text-xs text-dim xl:flex"><MapPin size={11} />{profile.location}</span>
           </a>
           <nav className="hidden gap-5 text-[0.8rem] font-medium text-dim lg:flex">
             {nav.map((n) => (
@@ -239,10 +253,10 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
               <div>
-                <div className="mb-6 overflow-hidden rounded-2xl border-2 border-line shadow-card">
-                  <img src="/HeadShot.png" alt={profile.name} className="h-auto w-full object-cover" width={400} height={400} />
-                </div>
                 <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
+                <div className="mb-6 overflow-hidden rounded-2xl border-2 border-line shadow-card">
+                  <Image src="/HeadShot.png" alt={profile.name} className="h-auto w-full object-cover" width={800} height={800} priority />
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {profile.certifications.map((cert) => (
                     <span key={cert.code} className="gradient-border inline-flex rounded-full bg-panel px-3 py-1.5 text-xs font-semibold text-accent">
@@ -305,27 +319,46 @@ export default function Home() {
 
         {/* ── Experience ───────────────────────────────────────── */}
         <section id="experience" className="border-t border-line bg-dark-alt px-6 py-36">
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-6xl space-y-6">
             <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
-            {profile.experience.map((job, i) => (
-              <motion.div key={`${job.company}-${job.role}`} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
-                <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-                  <div>
-                    <h3 className="font-bold">{job.role}</h3>
-                    <p className="text-sm font-medium text-accent">{job.company}</p>
+            {profile.experience.map((job) => {
+              const jobKey = `${job.company}-${job.role}`;
+              const maxVisible = 6;
+              const isExpanded = expandedJobs.has(jobKey);
+              const hasMore = job.bullets.length > maxVisible;
+              const visibleBullets = isExpanded ? job.bullets : job.bullets.slice(0, maxVisible);
+              return (
+                <motion.div key={jobKey} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
+                  <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                    <div>
+                      <h3 className="font-bold">{job.role}</h3>
+                      <p className="text-sm font-medium text-accent">{job.company}</p>
+                    </div>
+                    <span className="text-[0.78rem] font-medium text-dim">{job.period} · {job.location}</span>
                   </div>
-                  <span className="text-[0.78rem] font-medium text-dim">{job.period} · {job.location}</span>
-                </div>
-                <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                  {job.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2.5 text-[0.82rem] leading-relaxed text-dim">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+                  <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                    {visibleBullets.map((b) => (
+                      <li key={b} className="flex items-start gap-2.5 text-[0.82rem] leading-relaxed text-dim">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                  {hasMore && (
+                    <button
+                      onClick={() => setExpandedJobs((prev) => {
+                        const next = new Set(prev);
+                        if (next.has(jobKey)) next.delete(jobKey); else next.add(jobKey);
+                        return next;
+                      })}
+                      className="mt-4 text-[0.82rem] font-semibold text-accent transition-colors hover:text-accent-alt"
+                    >
+                      {isExpanded ? "Show less" : `Show ${job.bullets.length - maxVisible} more`}
+                    </button>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
@@ -391,46 +424,75 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <SectionTitle eyebrow="Testimonials" title="People Talk" center />
             <p className="mx-auto -mt-6 mb-12 max-w-xl text-center text-[0.92rem] leading-relaxed text-dim">Cross-functional technical leadership, from people who have seen it up close.</p>
-            <div className="relative overflow-hidden">
-              <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${carouselPage * 100}%)` }}>
-                {Array.from({ length: Math.ceil(profile.recommendations.length / carouselPerPage) }).map((_, pageIdx) => (
-                  <div key={pageIdx} className="grid w-full flex-shrink-0 gap-6 md:grid-cols-2 lg:grid-cols-3" style={{ minWidth: "100%" }}>
-                    {profile.recommendations.slice(pageIdx * carouselPerPage, pageIdx * carouselPerPage + carouselPerPage).map((rec, i) => (
-                      <motion.blockquote key={`${rec.name}-${i}`} {...fade} className="flex flex-col rounded-xl border border-line bg-card p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 text-lg font-bold text-accent">{rec.name.split(" ").map(n => n[0]).join("")}</div>
-                        <p className="flex-1 text-[0.84rem] leading-relaxed text-dim">{rec.quote}</p>
-                        <div className="mt-5 pt-4 border-t border-line">
-                          <p className="text-[0.9rem] font-bold">{rec.name}</p>
-                          <p className="mt-0.5 text-[0.76rem] text-dim">{rec.title}</p>
-                          <p className="text-[0.76rem] text-accent">{rec.company}</p>
-                        </div>
-                      </motion.blockquote>
-                    ))}
-                  </div>
+            <div
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Testimonials"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight" && carouselPage < totalPages - 1) setCarouselPage(carouselPage + 1);
+                if (e.key === "ArrowLeft" && carouselPage > 0) setCarouselPage(carouselPage - 1);
+              }}
+            >
+              <div className="relative overflow-hidden">
+                <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${carouselPage * 100}%)` }}>
+                  {Array.from({ length: totalPages }).map((_, pageIdx) => (
+                    <div
+                      key={pageIdx}
+                      role="group"
+                      aria-roledescription="slide"
+                      aria-label={`Slide ${pageIdx + 1} of ${totalPages}`}
+                      aria-hidden={pageIdx !== carouselPage}
+                      className="grid w-full flex-shrink-0 gap-6 lg:grid-cols-3"
+                      style={{ minWidth: "100%" }}
+                      inert={pageIdx !== carouselPage ? true : undefined}
+                    >
+                      {profile.recommendations.slice(pageIdx * carouselPerPage, pageIdx * carouselPerPage + carouselPerPage).map((rec) => {
+                        const isQuoteExpanded = expandedQuotes.has(rec.name);
+                        const quoteMaxLen = 200;
+                        const needsClamp = rec.quote.length > quoteMaxLen;
+                        const displayQuote = needsClamp && !isQuoteExpanded ? rec.quote.slice(0, quoteMaxLen).trimEnd() + "\u2026" : rec.quote;
+                        return (
+                          <motion.blockquote key={rec.name} {...fade} className="flex flex-col rounded-xl border border-line bg-card p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                            <div className="mb-4 flex items-center gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">{rec.name.split(" ").map(n => n[0]).join("")}</div>
+                              <div>
+                                <p className="text-[0.9rem] font-bold">{rec.name}</p>
+                                <p className="text-[0.72rem] text-dim">{rec.title} · <span className="text-accent">{rec.company}</span></p>
+                              </div>
+                            </div>
+                            <p className="flex-1 text-left text-[0.84rem] leading-relaxed text-dim">&ldquo;{displayQuote}&rdquo;</p>
+                            {needsClamp && (
+                              <button
+                                onClick={() => setExpandedQuotes((prev) => {
+                                  const next = new Set(prev);
+                                  if (next.has(rec.name)) next.delete(rec.name); else next.add(rec.name);
+                                  return next;
+                                })}
+                                className="mt-2 self-start text-[0.78rem] font-semibold text-accent transition-colors hover:text-accent-alt"
+                              >
+                                {isQuoteExpanded ? "Show less" : "Read more"}
+                              </button>
+                            )}
+                          </motion.blockquote>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-8 flex justify-center gap-2" role="tablist" aria-label="Testimonial pages">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button
+                    key={i}
+                    role="tab"
+                    aria-selected={carouselPage === i}
+                    aria-label={`Page ${i + 1} of ${totalPages}`}
+                    onClick={() => setCarouselPage(i)}
+                    className={`h-2.5 rounded-full transition-all ${carouselPage === i ? "w-6 bg-accent" : "w-2.5 bg-line hover:bg-dim/40"}`}
+                  />
                 ))}
               </div>
             </div>
-            <div className="mt-8 flex justify-center gap-2">
-              {Array.from({ length: Math.ceil(profile.recommendations.length / carouselPerPage) }).map((_, i) => (
-                <button key={i} onClick={() => setCarouselPage(i)} className={`h-2.5 rounded-full transition-all ${carouselPage === i ? "w-6 bg-accent" : "w-2.5 bg-line hover:bg-dim/40"}`} aria-label={`Page ${i + 1}`} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Writing ─────────────────────────────────────────── */}
-        <section id="writing" className="border-t border-line bg-dark px-6 py-36">
-          <div className="mx-auto max-w-6xl">
-            <SectionTitle eyebrow="Writing" title="Ideas worth sharing" />
-            <motion.div {...fade} className="rounded-xl border border-line bg-card p-6 shadow-card">
-              <div className="flex items-center gap-3">
-                <BookOpen className="h-5 w-5 shrink-0 text-accent" />
-                <div>
-                  <p className="text-[0.92rem] font-semibold">Articles coming soon</p>
-                  <p className="mt-0.5 text-[0.82rem] text-dim">Topics include self-hosted runners, Terraform module patterns, repository migrations, and CI/CD debugging.</p>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
