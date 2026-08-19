@@ -300,8 +300,8 @@ export default function Home() {
         <section id="experience" className="border-t border-line bg-dark-alt px-6 py-36">
           <div className="mx-auto max-w-6xl">
             <SectionTitle eyebrow="Experience" title="Where I've built leverage" />
-            {profile.experience.map((job) => (
-              <motion.div key={job.company} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
+            {profile.experience.map((job, i) => (
+              <motion.div key={`${job.company}-${job.role}`} {...fade} className="rounded-xl border border-line bg-card p-7 shadow-card sm:p-8">
                 <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
                   <div>
                     <h3 className="font-bold">{job.role}</h3>
