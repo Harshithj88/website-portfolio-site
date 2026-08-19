@@ -239,6 +239,9 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
               <div>
+                <div className="mb-6 overflow-hidden rounded-2xl border-2 border-line shadow-card">
+                  <img src="/HeadShot.png" alt={profile.name} className="h-auto w-full object-cover" width={400} height={400} />
+                </div>
                 <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
                 <div className="flex flex-wrap gap-2">
                   {profile.certifications.map((cert) => (

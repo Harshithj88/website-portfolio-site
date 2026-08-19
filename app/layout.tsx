@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     description:
       "Reliable delivery systems, CI/CD automation, platform engineering, and infrastructure patterns.",
     type: "website",
+    images: [{ url: "/HeadShot.png", width: 800, height: 800, alt: "Harshith Julapelli" }],
   },
   robots: { index: true, follow: true },
 };
