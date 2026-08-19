@@ -50,6 +50,8 @@ const expertiseIcons = [Cloud, Workflow, Shield, Terminal, Activity, GitBranch];
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [carouselPage, setCarouselPage] = useState(0);
+  const carouselPerPage = 3;
   const { fade, item } = useMotion();
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLDivElement>(null);
@@ -95,7 +97,7 @@ export default function Home() {
     { label: "Projects", href: "#projects" },
     { label: "Experience", href: "#experience" },
     { label: "Certifications", href: "#certifications" },
-    { label: "Recommendations", href: "#recommendations" },
+    { label: "Testimonials", href: "#recommendations" },
     { label: "Writing", href: "#writing" },
     { label: "Contact", href: "#contact" },
   ];
@@ -381,20 +383,33 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Recommendations ──────────────────────────────── */}
+        {/* ── Testimonials ──────────────────────────────── */}
         <section id="recommendations" className="border-t border-line bg-dark-alt px-6 py-36">
           <div className="mx-auto max-w-6xl">
-            <SectionTitle eyebrow="What others say" title="Recommendations" />
-            <div className="grid gap-5 md:grid-cols-2">
-              {profile.recommendations.map((rec, i) => (
-                <motion.blockquote key={`${rec.name}-${i}`} {...item(i)} className="flex flex-col rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                  <Quote className="mb-3 h-5 w-5 shrink-0 text-accent/40" />
-                  <p className="flex-1 text-[0.85rem] leading-relaxed text-dim italic">&ldquo;{rec.quote}&rdquo;</p>
-                  <footer className="mt-4 border-t border-line pt-4">
-                    <p className="text-[0.88rem] font-semibold">{rec.name}</p>
-                    <p className="text-[0.78rem] text-dim">{rec.title}, {rec.company}</p>
-                  </footer>
-                </motion.blockquote>
+            <SectionTitle eyebrow="Testimonials" title="People Talk" center />
+            <p className="mx-auto -mt-6 mb-12 max-w-xl text-center text-[0.92rem] leading-relaxed text-dim">Cross-functional technical leadership, from people who have seen it up close.</p>
+            <div className="relative overflow-hidden">
+              <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${carouselPage * 100}%)` }}>
+                {Array.from({ length: Math.ceil(profile.recommendations.length / carouselPerPage) }).map((_, pageIdx) => (
+                  <div key={pageIdx} className="grid w-full flex-shrink-0 gap-6 md:grid-cols-2 lg:grid-cols-3" style={{ minWidth: "100%" }}>
+                    {profile.recommendations.slice(pageIdx * carouselPerPage, pageIdx * carouselPerPage + carouselPerPage).map((rec, i) => (
+                      <motion.blockquote key={`${rec.name}-${i}`} {...fade} className="flex flex-col rounded-xl border border-line bg-card p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 text-lg font-bold text-accent">{rec.name.split(" ").map(n => n[0]).join("")}</div>
+                        <p className="flex-1 text-[0.84rem] leading-relaxed text-dim">{rec.quote}</p>
+                        <div className="mt-5 pt-4 border-t border-line">
+                          <p className="text-[0.9rem] font-bold">{rec.name}</p>
+                          <p className="mt-0.5 text-[0.76rem] text-dim">{rec.title}</p>
+                          <p className="text-[0.76rem] text-accent">{rec.company}</p>
+                        </div>
+                      </motion.blockquote>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-8 flex justify-center gap-2">
+              {Array.from({ length: Math.ceil(profile.recommendations.length / carouselPerPage) }).map((_, i) => (
+                <button key={i} onClick={() => setCarouselPage(i)} className={`h-2.5 rounded-full transition-all ${carouselPage === i ? "w-6 bg-accent" : "w-2.5 bg-line hover:bg-dim/40"}`} aria-label={`Page ${i + 1}`} />
               ))}
             </div>
           </div>
