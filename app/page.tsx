@@ -302,14 +302,28 @@ export default function Home() {
             <div className="grid gap-5 md:grid-cols-2">
               {profile.projects.map((proj, i) => (
                 <motion.article key={proj.title} {...item(i)} className="flex flex-col rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                  <h3 className="font-bold">{proj.title}</h3>
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-bold">{proj.title}</h3>
+                    {proj.url && (
+                      <a href={proj.url} target="_blank" rel="noreferrer" className="shrink-0 text-dim transition-colors hover:text-accent" aria-label={`View ${proj.title} on GitHub`}>
+                        <Github size={16} />
+                      </a>
+                    )}
+                  </div>
                   <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-dim">{proj.summary}</p>
                   <div className="mt-3 rounded-lg bg-accent/[0.06] px-3 py-2 text-[0.82rem]">
                     <span className="font-semibold text-accent">Impact </span>
                     <span className="text-foreground/70">{proj.impact}</span>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {proj.tags.map((t) => <Badge key={t}>{t}</Badge>)}
+                  <div className="mt-3 flex items-center justify-between">
+                    <div className="flex flex-wrap gap-1.5">
+                      {proj.tags.map((t) => <Badge key={t}>{t}</Badge>)}
+                    </div>
+                    {proj.url && (
+                      <a href={proj.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-accent transition-colors hover:text-accent-alt">
+                        View repo <ArrowUpRight size={12} />
+                      </a>
+                    )}
                   </div>
                 </motion.article>
               ))}

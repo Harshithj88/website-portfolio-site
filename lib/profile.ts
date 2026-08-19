@@ -104,36 +104,40 @@ export const profile = {
   ],
   projects: [
     {
-      title: "Source Control Modernization",
+      title: "AKS Platform — Bicep + GitHub Actions",
       summary:
-        "Led enterprise-wide migration from legacy source control into modern Git workflows. Designed branching strategies, created enablement documentation, and provided cross-functional support that minimized operational risk during transition.",
+        "Production-style AKS platform with modular Bicep IaC and secretless CI/CD via GitHub Actions OIDC. Includes VNet isolation, ACR, Key Vault with RBAC, Log Analytics, and multi-environment parameters.",
       impact:
-        "Accelerated team adoption of modern Git workflows, improved repository ownership, and reduced merge conflicts across engineering teams.",
-      tags: ["Git", "Azure DevOps", "Migration", "Developer Enablement"],
+        "Zero stored secrets — OIDC auth and managed identity eliminate credential rotation entirely",
+      tags: ["Bicep", "GitHub Actions", "AKS", "OIDC", "Key Vault"],
+      url: "https://github.com/Harshithj88/aks-platform-bicep-github-actions",
     },
     {
-      title: "GitHub Actions Runner Platform",
+      title: "AKS SRE Platform Lab",
       summary:
-        "Built and managed scalable self-hosted GitHub Actions runner infrastructure for enterprise engineering teams, improving CI/CD reliability while reducing dependency on hosted runners.",
+        "End-to-end SRE platform with Helm-based Kubernetes deployments, Prometheus + Grafana observability, SLO-based alerting, OpenTelemetry tracing, and full incident response documentation.",
       impact:
-        "Enabled faster, more controlled build execution with improved governance around runner administration and access.",
-      tags: ["GitHub Actions", "Self-hosted Runners", "CI/CD", "Governance"],
+        "Full observability stack with SLO-driven alerts reduces noise and focuses on-call on real user impact",
+      tags: ["AKS", "Helm", "Prometheus", "Grafana", "SLOs"],
+      url: "https://github.com/Harshithj88/aks-sre-platform-lab",
     },
     {
-      title: "Infrastructure as Code Framework",
+      title: "DevOps & SRE Operations Toolkit",
       summary:
-        "Created reusable Terraform and Bicep modules that replaced manual, ticket-based provisioning with self-service patterns. Teams deploy compliant infrastructure consistently across all environments.",
+        "Production-grade PowerShell automation for server fleet management, certificate lifecycle, IIS administration, rolling deployments, CI/CD pipeline templates, KQL queries, and security compliance.",
       impact:
-        "Improved provisioning consistency, reduced configuration drift, and strengthened audit readiness across cloud environments.",
-      tags: ["Terraform", "Bicep", "Azure", "IaC"],
+        "Covers 10 core DevOps/SRE job duties with reusable automation across hybrid on-prem and cloud environments",
+      tags: ["PowerShell", "Azure DevOps", "IIS", "KQL", "Bicep"],
+      url: "https://github.com/Harshithj88/devops-sre-operations-toolkit",
     },
     {
-      title: "Release Governance Automation",
+      title: "SRE / DevOps Handbook",
       summary:
-        "Automated approval gates, deployment checks, and configurable access models across lower environments — balancing deployment speed with operational control and compliance requirements.",
+        "Open-source knowledge base with 9 troubleshooting runbooks, 10 cheat sheets, 5 production checklists, architecture diagrams, and reusable SRE documentation templates.",
       impact:
-        "Eliminated ambiguity around release approvals, reduced manual deployment effort, and improved deployment quality.",
-      tags: ["Azure DevOps", "Approvals", "Release Engineering", "Controls"],
+        "Battle-tested operational playbook covering incident response, capacity planning, toil reduction, and change management",
+      tags: ["SRE", "Runbooks", "Kubernetes", "Documentation"],
+      url: "https://github.com/Harshithj88/sre-devops-handbook",
     },
   ],
   experience: [
