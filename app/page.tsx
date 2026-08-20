@@ -6,6 +6,8 @@ import {
   ArrowUpRight,
   Award,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Cloud,
   Download,
   GitBranch,
@@ -254,8 +256,8 @@ export default function Home() {
             <motion.div {...fade} className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
               <div>
                 <SectionTitle eyebrow="About" title="The Platform Engineer Behind The Pipeline" />
-                <div className="mb-6 overflow-hidden rounded-2xl border-2 border-line shadow-card">
-                  <Image src="/HeadShot.png" alt={profile.name} className="h-auto w-full object-cover" width={800} height={800} priority />
+                <div className="mb-6 max-w-[320px] overflow-hidden rounded-2xl border-2 border-line shadow-card">
+                  <Image src="/HeadShot.png" alt={profile.name} className="aspect-square w-full object-cover object-top" width={800} height={800} priority />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {profile.certifications.map((cert) => (
@@ -447,64 +449,74 @@ export default function Home() {
                 if (e.key === "ArrowLeft" && carouselPage > 0) setCarouselPage(carouselPage - 1);
               }}
             >
-              <div className="relative overflow-hidden">
-                <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${carouselPage * 100}%)` }}>
-                  {Array.from({ length: totalPages }).map((_, pageIdx) => (
-                    <div
-                      key={pageIdx}
-                      role="group"
-                      aria-roledescription="slide"
-                      aria-label={`Slide ${pageIdx + 1} of ${totalPages}`}
-                      aria-hidden={pageIdx !== carouselPage}
-                      className="grid w-full flex-shrink-0 gap-6 lg:grid-cols-3"
-                      style={{ minWidth: "100%" }}
-                      inert={pageIdx !== carouselPage ? true : undefined}
-                    >
-                      {profile.recommendations.slice(pageIdx * carouselPerPage, pageIdx * carouselPerPage + carouselPerPage).map((rec) => {
-                        const isQuoteExpanded = expandedQuotes.has(rec.name);
-                        const quoteMaxLen = 200;
-                        const needsClamp = rec.quote.length > quoteMaxLen;
-                        const displayQuote = needsClamp && !isQuoteExpanded ? rec.quote.slice(0, quoteMaxLen).trimEnd() + "\u2026" : rec.quote;
-                        return (
-                          <motion.blockquote key={rec.name} {...fade} className="flex flex-col rounded-xl border border-line bg-card p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                            <div className="mb-4 flex items-center gap-3">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">{rec.name.split(" ").map(n => n[0]).join("")}</div>
-                              <div>
-                                <p className="text-[0.9rem] font-bold">{rec.name}</p>
-                                <p className="text-[0.72rem] text-dim">{rec.title} · <span className="text-accent">{rec.company}</span></p>
-                              </div>
-                            </div>
-                            <p className="flex-1 text-left text-[0.84rem] leading-relaxed text-dim">&ldquo;{displayQuote}&rdquo;</p>
-                            {needsClamp && (
-                              <button
-                                onClick={() => setExpandedQuotes((prev) => {
-                                  const next = new Set(prev);
-                                  if (next.has(rec.name)) next.delete(rec.name); else next.add(rec.name);
-                                  return next;
-                                })}
-                                className="mt-2 self-start text-[0.78rem] font-semibold text-accent transition-colors hover:text-accent-alt"
-                              >
-                                {isQuoteExpanded ? "Show less" : "Read more"}
-                              </button>
-                            )}
-                          </motion.blockquote>
-                        );
-                      })}
-                    </div>
+              <div
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Slide ${carouselPage + 1} of ${totalPages}`}
+                className="grid w-full gap-6 lg:grid-cols-3"
+              >
+                {profile.recommendations.slice(carouselPage * carouselPerPage, carouselPage * carouselPerPage + carouselPerPage).map((rec) => {
+                  const isQuoteExpanded = expandedQuotes.has(rec.name);
+                  const quoteMaxLen = 200;
+                  const needsClamp = rec.quote.length > quoteMaxLen;
+                  const trimmed = rec.quote.slice(0, quoteMaxLen);
+                  const wordBoundary = trimmed.lastIndexOf(" ");
+                  const displayQuote = needsClamp && !isQuoteExpanded ? rec.quote.slice(0, wordBoundary > 0 ? wordBoundary : quoteMaxLen).trimEnd() + "\u2026" : rec.quote;
+                  return (
+                    <motion.blockquote key={rec.name} {...fade} className="flex flex-col rounded-xl border border-line bg-card p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                      <div className="mb-4 flex items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">{rec.name.split(" ").map(n => n[0]).join("")}</div>
+                        <div>
+                          <p className="text-[0.9rem] font-bold">{rec.name}</p>
+                          <p className="text-[0.72rem] text-dim">{rec.title} · <span className="text-accent">{rec.company}</span></p>
+                        </div>
+                      </div>
+                      <p className="flex-1 text-left text-[0.84rem] leading-relaxed text-dim">&ldquo;{displayQuote}&rdquo;</p>
+                      {needsClamp && (
+                        <button
+                          onClick={() => setExpandedQuotes((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(rec.name)) next.delete(rec.name); else next.add(rec.name);
+                            return next;
+                          })}
+                          className="mt-2 self-start text-[0.78rem] font-semibold text-accent transition-colors hover:text-accent-alt"
+                        >
+                          {isQuoteExpanded ? "Show less" : "Read more"}
+                        </button>
+                      )}
+                    </motion.blockquote>
+                  );
+                })}
+              </div>
+              <div className="mt-8 flex items-center justify-center gap-3">
+                <button
+                  onClick={() => setCarouselPage(Math.max(0, carouselPage - 1))}
+                  disabled={carouselPage === 0}
+                  aria-label="Previous page"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-dim transition-colors hover:border-accent/40 hover:text-accent disabled:opacity-30 disabled:hover:border-line disabled:hover:text-dim"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <div className="flex gap-2" role="group" aria-label="Testimonial pages">
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <button
+                      key={i}
+                      aria-label={`Page ${i + 1} of ${totalPages}`}
+                      aria-current={carouselPage === i ? "true" : undefined}
+                      onClick={() => setCarouselPage(i)}
+                      className={`rounded-full transition-all ${carouselPage === i ? "h-3 w-6 bg-accent" : "h-3 w-3 bg-line hover:bg-dim/40"}`}
+                      style={{ minWidth: 44, minHeight: 44, display: "inline-flex", alignItems: "center", justifyContent: "center" }}
+                    />
                   ))}
                 </div>
-              </div>
-              <div className="mt-8 flex justify-center gap-2" role="tablist" aria-label="Testimonial pages">
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    role="tab"
-                    aria-selected={carouselPage === i}
-                    aria-label={`Page ${i + 1} of ${totalPages}`}
-                    onClick={() => setCarouselPage(i)}
-                    className={`h-2.5 rounded-full transition-all ${carouselPage === i ? "w-6 bg-accent" : "w-2.5 bg-line hover:bg-dim/40"}`}
-                  />
-                ))}
+                <button
+                  onClick={() => setCarouselPage(Math.min(totalPages - 1, carouselPage + 1))}
+                  disabled={carouselPage === totalPages - 1}
+                  aria-label="Next page"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-dim transition-colors hover:border-accent/40 hover:text-accent disabled:opacity-30 disabled:hover:border-line disabled:hover:text-dim"
+                >
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </div>
           </div>
