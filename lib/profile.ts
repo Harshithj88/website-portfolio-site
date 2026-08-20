@@ -54,12 +54,14 @@ export const profile = {
       issuer: "Microsoft",
       code: "AZ-400",
       description: "Advanced DevOps practices, CI/CD strategy, infrastructure automation, and release governance.",
+      url: "https://learn.microsoft.com/api/credentials/share/en-us/HarshithRao-8644/D123BD4010FF44AC?sharingId=2C43860096F8C19A",
     },
     {
-      title: "Microsoft Certified: Azure Developer Associate",
+      title: "Microsoft Certified: Azure Administrator Associate",
       issuer: "Microsoft",
-      code: "AZ-204",
-      description: "Azure development, cloud-native solutions, integrations, and application deployment.",
+      code: "AZ-104",
+      description: "Azure administration, identity, governance, storage, compute, and virtual networking.",
+      url: "https://learn.microsoft.com/api/credentials/share/en-us/HarshithRao-8644/BD3BFC251544413A?sharingId=2C43860096F8C19A",
     },
   ],
   stack: {

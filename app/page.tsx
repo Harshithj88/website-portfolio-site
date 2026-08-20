@@ -401,15 +401,18 @@ export default function Home() {
             <SectionTitle eyebrow="Credentials" title="Certifications" />
             <div className="grid gap-5 sm:grid-cols-2">
               {profile.certifications.map((cert, i) => (
-                <motion.div key={cert.code} {...item(i)} className="rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                <motion.a key={cert.code} href={cert.url} target="_blank" rel="noreferrer" {...item(i)} className="block rounded-xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]">
                   <div className="mb-3 flex items-center gap-3">
                     <Award className="h-6 w-6 shrink-0 text-accent" />
                     <span className="rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-0.5 text-xs font-bold text-accent">{cert.code}</span>
                   </div>
                   <h3 className="font-bold">{cert.title}</h3>
                   <p className="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{cert.description}</p>
-                  <p className="mt-2 text-xs font-medium text-dim">{cert.issuer}</p>
-                </motion.div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <p className="text-xs font-medium text-dim">{cert.issuer}</p>
+                    <span className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-accent">Verify credential <ArrowUpRight size={12} /></span>
+                  </div>
+                </motion.a>
               ))}
             </div>
           </div>
