@@ -180,9 +180,11 @@ export default function Home() {
                   <a href="#projects" className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(56,189,248,0.3)]">
                     View Projects <ArrowUpRight size={15} />
                   </a>
+                  {/* Resume download temporarily disabled
                   <a href={resumeHref} className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-dim transition-all hover:border-accent/40 hover:text-foreground">
                     Resume <Download size={15} />
                   </a>
+                  */}
                 </div>
                 <div className="mt-8 rounded-xl border border-line bg-card p-4 font-mono text-[0.78rem] leading-relaxed shadow-card lg:hidden">
                   <div className="mb-2 flex items-center gap-1.5">
@@ -541,12 +543,12 @@ export default function Home() {
             <div className="mt-5 flex justify-center gap-4">
               <a href={profile.linkedInUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="LinkedIn"><Linkedin size={20} /></a>
               <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="text-dim transition-colors hover:text-foreground" aria-label="GitHub"><Github size={20} /></a>
-              <a href={resumeHref} download className="text-dim transition-colors hover:text-foreground" aria-label="Resume"><Download size={20} /></a>
+              {/* Resume download temporarily disabled */}
+              {/*<a href={resumeHref} download className="text-dim transition-colors hover:text-foreground" aria-label="Resume"><Download size={20} /></a>*/}
             </div>
           </motion.div>
         </section>
       </main>
-
       {/* ── Footer ─────────────────────────────────────────── */}
       <footer className="border-t border-line px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-dim sm:flex-row">
