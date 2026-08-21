@@ -530,10 +530,10 @@ export default function Home() {
           <motion.div {...fade} className="mx-auto max-w-6xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">Get in touch</p>
             <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Ready to modernize your <span className="gradient-text">CI/CD platform?</span>
+              Interested in building reliable <span className="gradient-text">engineering platforms</span> together?
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-dim">
-              Whether it&apos;s cloud automation, developer experience, or platform engineering &mdash; let&apos;s talk.
+              Senior DevOps · SRE · Platform Engineering
             </p>
             <a href={`mailto:${profile.email}`} className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-bold text-dark transition-all hover:shadow-[0_0_24px_rgba(34,211,238,0.3)]">
               <Mail size={15} /> Email me

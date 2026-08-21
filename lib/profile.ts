@@ -106,16 +106,16 @@ export const profile = {
   ],
   projects: [
     {
-      title: "AKS Platform — Bicep + GitHub Actions",
+      title: "AKS Enterprise Platform Engineering",
       summary:
         "Production-style AKS platform with modular Bicep IaC and secretless CI/CD via GitHub Actions OIDC. Includes VNet isolation, ACR, Key Vault with RBAC, Log Analytics, and multi-environment parameters.",
       impact:
-        "Zero stored secrets — OIDC auth and managed identity eliminate credential rotation entirely",
+        "Eliminates long-lived GitHub-to-Azure credentials through OIDC federation and managed identities",
       tags: ["Bicep", "GitHub Actions", "AKS", "OIDC", "Key Vault"],
       url: "https://github.com/Harshithj88/aks-platform-bicep-github-actions",
     },
     {
-      title: "AKS SRE Platform Lab",
+      title: "AKS Reliability Engineering Platform",
       summary:
         "End-to-end SRE platform with Helm-based Kubernetes deployments, Prometheus + Grafana observability, SLO-based alerting, OpenTelemetry tracing, and full incident response documentation.",
       impact:
