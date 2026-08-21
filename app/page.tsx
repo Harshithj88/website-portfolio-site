@@ -191,10 +191,10 @@ export default function Home() {
                     <span className="h-2 w-2 rounded-full bg-green-500/70" />
                   </div>
                   <div className="space-y-1.5 text-dim">
-                    <p><span className="text-accent">$</span> echo $ROLE</p>
-                    <p className="text-accent-alt">Platform Engineer</p>
-                    <p><span className="text-accent">$</span> az pipelines list | wc -l</p>
-                    <p className="text-foreground/80">{profile.metrics[0].value} managed</p>
+                    <p><span className="text-accent">$</span> whoami</p>
+                    <p className="text-foreground/80">Platform Engineer @ Enterprise Scale</p>
+                    <p><span className="text-accent">$</span> cat ~/.focus</p>
+                    <p className="text-foreground/80">IaC · CI/CD · SRE · Automation</p>
                   </div>
                 </div>
               </motion.div>
@@ -207,14 +207,14 @@ export default function Home() {
                     <span className="ml-2 text-xs text-dim">terminal</span>
                   </div>
                   <div className="space-y-2.5 text-dim">
-                    <p><span className="text-accent">$</span> az pipelines list</p>
-                    <p className="text-foreground/80">{profile.metrics[0].value} pipelines managed</p>
-                    <p className="mt-1"><span className="text-accent">$</span> gh repo list --limit 999 | wc -l</p>
-                    <p className="text-foreground/80">{profile.metrics[1].value} repositories governed</p>
-                    <p className="mt-1"><span className="text-accent">$</span> uptime --platform</p>
-                    <p className="text-foreground/80">99.9% availability</p>
-                    <p className="mt-1"><span className="text-accent">$</span> echo $ROLE</p>
-                    <p className="text-accent-alt">Platform Engineer</p>
+                    <p><span className="text-accent">$</span> whoami</p>
+                    <p className="text-foreground/80">Platform Engineer @ Enterprise Scale</p>
+                    <p><span className="text-accent">$</span> cat ~/.focus</p>
+                    <p className="text-foreground/80">IaC · CI/CD · SRE · Automation</p>
+                    <p><span className="text-accent">$</span> git log --oneline -3</p>
+                    <p className="text-foreground/80"><span className="text-accent-alt">a1b2c3d</span> Modular Bicep for AKS</p>
+                    <p className="text-foreground/80"><span className="text-accent-alt">d4e5f6g</span> OIDC federation pipeline</p>
+                    <p className="text-foreground/80"><span className="text-accent-alt">g7h8i9j</span> SLO alerting framework</p>
                   </div>
                 </div>
               </motion.div>
