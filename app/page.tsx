@@ -441,7 +441,7 @@ export default function Home() {
         {/* ── Testimonials ──────────────────────────────── */}
         <section id="recommendations" className="border-t border-line bg-dark-alt px-6 py-36">
           <div className="mx-auto max-w-6xl">
-            <SectionTitle eyebrow="Testimonials" title="People Talk" center />
+            <SectionTitle eyebrow="Testimonials" title="Recommendations" center />
             <p className="mx-auto -mt-6 mb-12 max-w-xl text-center text-[0.92rem] leading-relaxed text-dim">Cross-functional technical leadership, from people who have seen it up close.</p>
             <div
               role="region"
