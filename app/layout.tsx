@@ -1,36 +1,38 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { profile, siteUrl } from "@/lib/profile";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
+const title = `${profile.name} | DevOps, SRE & Platform Automation`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://harshithjulapelli.com"),
-  title: "Harshith Julapelli | DevOps, SRE & Platform Automation",
+  metadataBase: new URL(siteUrl),
+  title,
   description:
     "Portfolio of Harshith Julapelli, a DevOps and Site Reliability Engineer focused on CI/CD, Azure DevOps, GitHub Actions, infrastructure automation, and platform reliability.",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Harshith Julapelli | DevOps, SRE & Platform Automation",
+    title,
     description:
       "Reliable delivery systems, CI/CD automation, platform engineering, and infrastructure patterns.",
     type: "website",
-    images: [{ url: "/HeadShot.png", width: 800, height: 800, alt: "Harshith Julapelli" }],
+    url: siteUrl,
   },
+  twitter: { card: "summary_large_image", title },
   robots: { index: true, follow: true },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Harshith Julapelli",
-  url: "https://harshithjulapelli.com",
-  image: "https://harshithjulapelli.com/HeadShot.png",
+  name: profile.name,
+  url: siteUrl,
+  image: `${siteUrl}/HeadShot.png`,
   jobTitle: "Platform Engineer | DevOps | SRE",
   worksFor: { "@type": "Organization", name: "loanDepot" },
-  sameAs: [
-    "https://github.com/Harshithj88",
-    "https://www.linkedin.com/in/hjulapelli/",
-  ],
+  sameAs: [profile.githubUrl, profile.linkedInUrl],
   knowsAbout: [
     "Azure DevOps",
     "GitHub Actions",
@@ -42,7 +44,7 @@ const jsonLd = {
     "Site Reliability Engineering",
     "Platform Engineering",
   ],
-  email: "mailto:harsh.julapelli@gmail.com",
+  email: `mailto:${profile.email}`,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Plano",
@@ -51,11 +53,16 @@ const jsonLd = {
   },
 };
 
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={inter.className} suppressHydrationWarning>
         <script
           type="application/ld+json"
