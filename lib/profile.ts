@@ -1,6 +1,7 @@
+export const siteUrl = "https://harshithjulapelli.com";
+
 export const profile = {
   name: "Harshith Julapelli",
-  initials: "Harsh",
   title: "Platform Engineer | DevOps | SRE | Cloud Automation",
   location: "Plano, Texas | Remote",
   githubUser: "Harshithj88",
@@ -8,45 +9,45 @@ export const profile = {
   linkedInUrl: "https://www.linkedin.com/in/hjulapelli/",
   email: "harsh.julapelli@gmail.com",
   resumeFileName: "Harshith-Julapelli-Resume.pdf",
+  availability: "Open to platform & SRE opportunities",
   headline:
     "I build reliable engineering platforms that help teams ship faster with confidence.",
   summary:
-    "Microsoft Certified Azure DevOps Engineer Expert focused on building reliable, scalable, and secure engineering platforms that enable development teams to deliver software efficiently.",
+    "Azure DevOps Engineer Expert with 9+ years in DevOps and SRE. I run CI/CD, infrastructure as code and governance for 100+ repositories, and I automate the work that slows teams down.",
   about: [
-    "I'm a Microsoft Certified Azure DevOps Engineer Expert with experience in DevOps, Site Reliability Engineering (SRE), cloud operations, and platform automation. My focus is on building reliable, scalable, and secure engineering platforms that enable development teams to deliver software efficiently while maintaining high availability and operational excellence.",
-    "I enjoy solving complex infrastructure and reliability challenges through automation, observability, and engineering best practices. My areas of expertise include Azure DevOps, GitHub Enterprise & GitHub Actions, CI/CD Pipeline Engineering, Infrastructure as Code, Platform Engineering, Monitoring & Observability, Cloud Automation, Release Engineering, Incident Response, and Operational Excellence.",
-    "Throughout my career, I have partnered with development, security, and business teams to improve deployment reliability, reduce manual operational effort, strengthen governance, and increase platform stability.",
+    "I'm a Microsoft Certified Azure DevOps Engineer Expert. I started as a software engineer in regulated healthcare, moved into DevOps, and now run the delivery platform for a large mortgage lender: Azure DevOps, GitHub Actions, self-hosted runners, Terraform and Bicep.",
+    "What I care about is the boring part that makes everything else work: pipelines that don't break, access that is least-privilege and auditable, and servers that are configured the same way every time. When something does break, I like finding the root cause and writing the runbook so it stays fixed.",
+    "I work closely with development, security and audit teams, and I'm happiest when a team can ship without needing to ask me.",
+  ],
+  careerStartYear: 2016,
+  heroLines: ["Hi, I'm Harshith.", "I build the platforms", "teams ship on."],
+  howIWork: [
+    "I treat delivery as a product: pipelines should be boring, access should be least-privilege, and every server should be configured the same way every time.",
+    "When something breaks I look for the root cause, fix it in code, and write the runbook so the next person doesn't need me.",
+  ],
+  experienceAreas: [
+    { name: "CI/CD & release engineering", since: 2016 },
+    { name: "Git & source control", since: 2016 },
+    { name: "Azure", since: 2018 },
+    { name: "Windows Server & IIS", since: 2018 },
+    { name: "Infrastructure as Code", since: 2021 },
+    { name: "Kubernetes & GitOps", since: 2021 },
   ],
   achievements: [
     "Supported 100+ repositories across enterprise engineering teams",
-    "Built enterprise GitHub Actions runner platform from the ground up",
-    "Led source control modernization initiatives across the organization",
+    "Built an enterprise GitHub Actions runner platform from the ground up",
+    "Led source control modernization from TFS to Azure DevOps and GitHub",
     "Implemented Terraform and Bicep infrastructure standards",
     "Improved deployment governance and release automation",
+    "Upgraded 60+ application servers to Windows Server 2022 with TLS 1.3",
   ],
   tagline:
-    "Improving system reliability, automating operational workflows, reducing deployment risk, and strengthening DevOps and SRE practices.",
+    "Improving system reliability, automating operational workflows, and reducing deployment risk.",
   metrics: [
-    {
-      value: "50+",
-      label: "CI/CD Pipelines Automated",
-      note: "Enterprise delivery workflows standardized across teams",
-    },
-    {
-      value: "100+",
-      label: "Repositories Governed",
-      note: "Modern Git workflows, branch policies, and governance at scale",
-    },
-    {
-      value: "1000+",
-      label: "Deployments Enabled",
-      note: "Consistent, repeatable releases through pipeline automation",
-    },
-    {
-      value: "99.9%",
-      label: "Platform Availability",
-      note: "Uptime-focused infrastructure and incident response practices",
-    },
+    { value: "100+", label: "Repositories Supported", note: "Git workflows, branch policies and governance" },
+    { value: "30+", label: "Pipelines Modernized", note: "Classic TFS build and release moved to YAML" },
+    { value: "500+", label: "Service Accounts Managed", note: "Service accounts and gMSAs with audit evidence" },
+    { value: "60+", label: "Servers Upgraded", note: "Windows Server 2022 and TLS 1.3 enablement" },
   ],
   certifications: [
     {
@@ -72,72 +73,36 @@ export const profile = {
     Platforms: ["Linux", "Windows Server", "Docker", "Kubernetes"],
     Tools: ["Git", "REST APIs", "Dynatrace", "Helm"],
   },
-  expertise: [
-    {
-      title: "Cloud & Infrastructure",
-      body: "Design and operate Azure-first infrastructure with AWS exposure. Repeatable provisioning through Terraform, Bicep, and ARM templates — enabling teams to deploy compliant environments consistently.",
-      tags: ["Azure", "AWS", "Terraform", "Bicep", "ARM Templates"],
-    },
-    {
-      title: "CI/CD & Delivery Automation",
-      body: "Build and maintain enterprise CI/CD platforms across Azure DevOps and GitHub Actions. Self-hosted runners, approval gates, and release automation that reduce deployment time from hours to minutes.",
-      tags: ["Azure DevOps", "GitHub Actions", "Release Automation", "Git"],
-    },
-    {
-      title: "Governance & Security",
-      body: "Implement least-privilege access, branch protections, deployment controls, service account lifecycle management, and gMSA workflows. Audit-friendly documentation that satisfies compliance without slowing teams down.",
-      tags: ["RBAC", "Branch Policies", "gMSA", "Compliance"],
-    },
-    {
-      title: "Automation Engineering",
-      body: "Transform manual operational processes into repeatable, self-service automation using PowerShell, Bash, and Python. Pipeline templates, operational scripts, and runbooks that eliminate toil.",
-      tags: ["PowerShell", "Bash", "Python", "Runbooks"],
-    },
-    {
-      title: "Platform Reliability",
-      body: "Incident response, root cause analysis, performance optimization, and monitoring handoffs across Windows and Linux. Keep critical business applications running with minimal downtime.",
-      tags: ["Monitoring", "Incident Response", "Windows", "Linux"],
-    },
-    {
-      title: "Source Control Modernization",
-      body: "Lead repository migrations from legacy source control into modern Git-based workflows. Branching strategies, enablement documentation, and cross-functional team support that accelerate adoption.",
-      tags: ["Git", "Migration", "Branching Strategy", "Enablement"],
-    },
-  ],
   projects: [
     {
       title: "AKS Enterprise Platform Engineering",
       summary:
-        "Production-style AKS platform with modular Bicep IaC and secretless CI/CD via GitHub Actions OIDC. Includes VNet isolation, ACR, Key Vault with RBAC, Log Analytics, and multi-environment parameters.",
-      impact:
-        "Eliminates long-lived GitHub-to-Azure credentials through OIDC federation and managed identities",
+        "A production-style AKS platform built with modular Bicep and secretless CI/CD through GitHub Actions OIDC. Includes VNet isolation, ACR, Key Vault with RBAC, Log Analytics and multi-environment parameters.",
+      impact: "No long-lived GitHub-to-Azure credentials: OIDC federation and managed identities replace them.",
       tags: ["Bicep", "GitHub Actions", "AKS", "OIDC", "Key Vault"],
       url: "https://github.com/Harshithj88/aks-platform-bicep-github-actions",
     },
     {
       title: "AKS Reliability Engineering Platform",
       summary:
-        "End-to-end SRE platform with Helm-based Kubernetes deployments, Prometheus + Grafana observability, SLO-based alerting, OpenTelemetry tracing, and full incident response documentation.",
-      impact:
-        "Full observability stack with SLO-driven alerts reduces noise and focuses on-call on real user impact",
+        "An SRE platform with Helm-based deployments, Prometheus and Grafana observability, SLO-based alerting, OpenTelemetry tracing and incident response docs.",
+      impact: "SLO-driven alerts keep on-call focused on real user impact.",
       tags: ["AKS", "Helm", "Prometheus", "Grafana", "SLOs"],
       url: "https://github.com/Harshithj88/aks-sre-platform-lab",
     },
     {
       title: "DevOps & SRE Operations Toolkit",
       summary:
-        "Production-grade PowerShell automation for server fleet management, certificate lifecycle, IIS administration, rolling deployments, CI/CD pipeline templates, KQL queries, and security compliance.",
-      impact:
-        "Covers 10 core DevOps/SRE job duties with reusable automation across hybrid on-prem and cloud environments",
+        "PowerShell automation for server fleets, certificate lifecycle, IIS administration and rolling deployments, plus pipeline templates, KQL queries and compliance checks.",
+      impact: "Reusable automation for hybrid on-prem and cloud environments.",
       tags: ["PowerShell", "Azure DevOps", "IIS", "KQL", "Bicep"],
       url: "https://github.com/Harshithj88/devops-sre-operations-toolkit",
     },
     {
       title: "SRE / DevOps Handbook",
       summary:
-        "Open-source knowledge base with 9 troubleshooting runbooks, 10 cheat sheets, 5 production checklists, architecture diagrams, and reusable SRE documentation templates.",
-      impact:
-        "Battle-tested operational playbook covering incident response, capacity planning, toil reduction, and change management",
+        "An open-source knowledge base with 9 troubleshooting runbooks, 10 cheat sheets, 5 production checklists and reusable SRE templates.",
+      impact: "A practical playbook for incident response, capacity planning and change management.",
       tags: ["SRE", "Runbooks", "Kubernetes", "Documentation"],
       url: "https://github.com/Harshithj88/sre-devops-handbook",
     },
@@ -147,25 +112,18 @@ export const profile = {
       company: "loanDepot",
       role: "Senior DevOps Configuration Engineer",
       location: "Plano / Remote",
-      period: "Current",
+      period: "Mar 2021 – Present",
       bullets: [
-        "Manage enterprise Azure DevOps and GitHub Actions platforms supporting 100+ repositories across multiple engineering teams.",
-        "Design and maintain CI/CD automation that cut deployment cycle times by 40%, enabling teams to ship with higher confidence and fewer manual gates.",
-        "Implement Infrastructure as Code using Terraform and Bicep, creating reusable modules that standardize cloud provisioning across 4 environments.",
-        "Build and operate self-hosted runner infrastructure, approval workflows, and release governance that balance deployment velocity with operational control.",
-        "Strengthen platform security through service account lifecycle management, gMSA configurations, branch protections, and least-privilege access models.",
-        "Enable engineering teams through self-service automation, practical documentation, and cross-functional support that eliminates bottlenecks.",
-        "Onboard, configure, and support 150+ enterprise applications and components tracked in CMDB across on-prem and Azure platforms.",
-        "Support AKS deployments using GitOps/Flux, Helm, HelmRelease, Kubernetes manifests, and Bicep, improving release consistency and environment standardization.",
-        "Develop and maintain Bicep modules, ARM templates, and IaC deployment patterns, reducing manual provisioning effort by 60%.",
-        "Migrate source code repositories from TFS to Azure DevOps and GitHub, accelerating version control modernization across the organization.",
-        "Modernize 30+ legacy TFS/classic build and release pipelines into Azure DevOps YAML pipelines, improving maintainability and source-controlled configuration.",
-        "Build PowerShell automation for server discovery, IIS administration, Windows services, configuration validation, log cleanup, and environment health checks.",
-        "Configure newly provisioned Windows servers for application readiness, including IIS setup, services, dependencies, access validation, and deployment support.",
-        "Create and maintain 500+ service accounts and gMSA accounts supporting secure authentication, automation workflows, and production operations.",
-        "Represent the team in IT Controls, SOX, and UAR audits by validating access, ownership, service accounts, and compliance evidence.",
-        "Lead Windows Server 2022 upgrades and TLS 1.3 enablement across 60+ application servers, improving security posture and compliance readiness.",
-        "Troubleshoot CI/CD pipelines, build agents, SonarQube scans, NuGet restore issues, Kubernetes deployments, IIS apps, and RabbitMQ resources, reducing mean time to resolution.",
+        "Run the enterprise Azure DevOps and GitHub Actions platforms supporting 100+ repositories across multiple engineering teams.",
+        "Cut deployment cycle times by 40% through CI/CD automation, self-hosted runners, approval workflows and release governance.",
+        "Built reusable Terraform and Bicep modules that standardize provisioning across 4 environments and reduced manual provisioning effort by 60%.",
+        "Migrated repositories from TFS to Azure DevOps and GitHub and modernized 30+ classic build and release pipelines into YAML.",
+        "Support AKS deployments with GitOps/Flux, Helm and Bicep for more consistent releases across environments.",
+        "Manage 500+ service accounts and gMSAs, and represent the team in IT Controls, SOX and UAR audits.",
+        "Led Windows Server 2022 upgrades and TLS 1.3 enablement across 60+ application servers.",
+        "Write PowerShell automation for server discovery, IIS, Windows services, configuration validation and health checks.",
+        "Onboard and support 150+ applications and components tracked in the CMDB across on-prem and Azure.",
+        "Troubleshoot pipelines, build agents, SonarQube scans, NuGet restores, Kubernetes deployments, IIS apps and RabbitMQ.",
       ],
     },
     {
@@ -174,17 +132,11 @@ export const profile = {
       location: "Madison, WI",
       period: "Oct 2018 – Mar 2021",
       bullets: [
-        "Supported the full software development lifecycle across cross-functional teams using Scrum/Agile methodology, driving continuous improvement in delivery processes.",
-        "Designed and implemented Azure hosting cost optimization strategies, reducing cloud spend by 20%.",
-        "Provided Tier 3 production support via JIRA with on-call rotation, reducing time-to-resolution for customer-facing issues.",
-        "Served as key liaison between offshore development teams and onsite Product Owners, ensuring alignment on priorities and deliverables.",
-        "Architected cloud solutions using Azure App Functions, Log Analytics, Cosmos DB, and Azure DevOps for redundancy, scalability, and monitoring.",
-        "Led Meaningful Use Stage 3 certification effort, coordinating across multiple internal teams to achieve compliance.",
-        "Managed release deployments across Dev, QA, UAT, and Production environments using Octopus Deploy, TeamCity, and Jenkins.",
-        "Established server monitoring standards using Nagios and New Relic, improving production visibility and incident response times.",
-        "Implemented cloud cost management best practices using Microsoft Cloudyn, achieving measurable savings in Azure consumption.",
-        "Collaborated with Engineering, QA, and Integration teams to plan, develop, test, and maintain mobile and web applications.",
-        "Automated routine operational tasks with shell scripts for management reports, resource utilization alerts (CPU, memory, disk), and environment checks.",
+        "Cut Azure hosting spend by 20% through cost optimization and cost management tooling.",
+        "Architected cloud solutions on Azure Functions, Log Analytics, Cosmos DB and Azure DevOps for redundancy, scalability and monitoring.",
+        "Managed releases across Dev, QA, UAT and Production with Octopus Deploy, TeamCity and Jenkins.",
+        "Provided Tier 3 production support with on-call rotation and set monitoring standards with Nagios and New Relic.",
+        "Led the Meaningful Use Stage 3 certification effort across multiple internal teams.",
       ],
     },
     {
@@ -193,17 +145,9 @@ export const profile = {
       location: "Madison, WI",
       period: "Mar 2018 – Oct 2018",
       bullets: [
-        "Built and maintained complex healthcare applications in high-performing cross-functional teams.",
-        "Maintained code quality and automated testing using Git and Sahi Pro across the development lifecycle.",
-        "Set up multi-tiered web applications in a highly regulated environment (CLIA, HIPAA, SOX).",
-        "Integrated healthcare clinical data using Mirth and HL7 standards.",
-        "Deployed and managed web services and web applications on IIS.",
-        "Developed front-end features using JavaScript libraries, HTML5, data visualization, and UX design patterns.",
-        "Architected and deployed cloud-native solutions on Azure.",
-        "Managed project tracking and documentation using the Atlassian suite (Jira, Confluence).",
-        "Owned release deployments to Dev and QA servers, ensuring consistent delivery cadence.",
-        "Operated CI/CD tooling including Octopus Deploy, TeamCity, Jenkins, and MS SQL Server.",
-        "Led QA automation efforts in a fast-paced environment, coordinating with offshore teams.",
+        "Built healthcare applications in a regulated environment (CLIA, HIPAA, SOX), including HL7 integrations with Mirth.",
+        "Owned release deployments to Dev and QA, and ran CI/CD with Octopus Deploy, TeamCity and Jenkins.",
+        "Led QA automation with Sahi Pro and coordinated with offshore teams.",
       ],
     },
     {
@@ -212,19 +156,8 @@ export const profile = {
       location: "Monroe, NJ",
       period: "Aug 2016 – Mar 2018",
       bullets: [
-        "Configured Jenkins CI/CD pipelines with Git integration, automating build and deployment workflows across multiple environments.",
-        "Developed build and deployment scripts using Maven in Jenkins, streamlining promotion between environments.",
-        "Built inventory tracking and capacity alerting in Jenkins, reducing unplanned server outages.",
-        "Defined branching strategies and Git best practices to enable parallel development and Agile workflows.",
-        "Created Bash shell scripts for performance monitoring, health checks, and routine operational tasks.",
-        "Set up Jira as the defect tracking system with custom workflows, plug-ins, and issue lifecycle management.",
-        "Monitored critical system services, reporting on performance metrics and server health.",
-        "Evaluated and recommended system improvements, optimizations, and maintenance strategies.",
-        "Provisioned virtual environments for development teams and resolved day-to-day infrastructure issues.",
-        "Produced systems utilization and headroom reports to support troubleshooting and performance tuning.",
-        "Partnered with internal customers to develop and troubleshoot cloud-based solutions.",
-        "Documented procedures and created troubleshooting guides for software and hardware systems.",
-        "Monitored and maintained system performance against SLA targets.",
+        "Built Jenkins CI/CD pipelines with Git integration and Maven builds across multiple environments.",
+        "Defined Git branching strategies and wrote Bash tooling for monitoring, health checks and capacity alerts.",
       ],
     },
     {
@@ -233,10 +166,7 @@ export const profile = {
       location: "Warrensburg, MO",
       period: "Jan 2016 – Dec 2016",
       bullets: [
-        "Conducted qualitative data collection, analysis, and meta-analysis under faculty guidance.",
-        "Produced research reports and performed general analysis across multiple datasets.",
-        "Managed database operations including data entry, merging, and query development across various databases.",
-        "Optimized SQL queries for research data retrieval and reporting accuracy.",
+        "Managed research databases and optimized SQL queries for data retrieval and reporting.",
       ],
     },
   ],
@@ -276,28 +206,6 @@ export const profile = {
       title: "Strategic Agile Product Manager",
       company: "WellStack",
       quote: "Harshith is a pleasure to work with, he always goes above and beyond to ensure the work is done and done right. He was always available night or day and willing to take on additional tasks beyond his job. He is truly a team player and I know he will succeed in any position.",
-    },
-  ],
-  posts: [
-    {
-      title: "Building Secure Self-Hosted GitHub Runners at Scale",
-      desc: "Architecture patterns for enterprise runner infrastructure",
-    },
-    {
-      title: "Terraform Module Design Patterns for Platform Teams",
-      desc: "Reusable IaC that scales across environments",
-    },
-    {
-      title: "Lessons Learned from Enterprise Repository Migrations",
-      desc: "Minimizing risk when modernizing source control",
-    },
-    {
-      title: "Automating Azure DevOps Governance Without Slowing Teams Down",
-      desc: "Approval gates, branch policies, and deployment controls",
-    },
-    {
-      title: "Troubleshooting Production CI/CD Failures",
-      desc: "A systematic approach to pipeline debugging",
     },
   ],
 };
